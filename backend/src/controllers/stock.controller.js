@@ -1,5 +1,6 @@
 const { stockModel } = require("../models/stock.model");
 
+//get&getid
 const getStock = (req, res) => {
   stockModel
     .find()
@@ -11,7 +12,20 @@ const getStock = (req, res) => {
     });
 };
 
-function addStock(req, res) {
+const getStockId = (req, res) => {
+  const id = req.params.id;
+  stockModel
+    .findById(id)
+    .then((stock) => {
+      res.status(200).json({ msg: "success", data: stock });
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+};
+
+//add
+const addStock = (req, res)=> {
   const data = req.body;
   stockModel
     .create(data)
@@ -23,6 +37,7 @@ function addStock(req, res) {
     });
 }
 
+//update
 const updateStock = (req, res) => {
 
   const id = req.params.id;
@@ -41,6 +56,7 @@ const updateStock = (req, res) => {
 
 };
 
+//delete
 const deleteStock = (req, res) => {
 
   const id = req.params.id;
@@ -63,4 +79,4 @@ const deleteStock = (req, res) => {
 
 };
 
-module.exports = { getStock, addStock,deleteStock,updateStock };
+module.exports = { getStock, addStock,deleteStock,updateStock,getStockId };
