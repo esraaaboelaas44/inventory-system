@@ -15,4 +15,4 @@ SupplierRouter.post("/", addSupplier);
 SupplierRouter.put("/", updateSupplier);
 SupplierRouter.delete("/", deleteSupplier);
 
-module.exports = { SupplierRouter };
+module.exports = SupplierRouter;

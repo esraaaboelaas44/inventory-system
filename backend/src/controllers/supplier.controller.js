@@ -30,13 +30,22 @@ function addSupplier(req, res) {
     });
 }
 
-// const updateSupplier = (req, res) => {
-//   const toUpdate = req.body;
-//   const userID = req.params.id;
-//   console.log("User ID: ", userID);
-//   console.log(toUpdate);
-// };
+const updateSupplier = (req, res) => {
+  const id = req.params.id;
+  res.status(200).json({
+    success: true,
+    message: `Supplier ${id} updated successfully`,
+    data: req.body,
+  });
+};
 
-// const deleteSupplier
+// DELETE - Delete a supplier
+const deleteSupplier = (req, res) => {
+  const id = req.params.id;
+  res.status(200).json({
+    success: true,
+    message: `Supplier ${id} deleted successfully`,
+  });
+};
 
-module.exports = { getSupplier, addSupplier };
+module.exports = { getSupplier, addSupplier, updateSupplier, deleteSupplier };
