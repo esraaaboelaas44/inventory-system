@@ -15,4 +15,4 @@ stockRouter.get("/:id", getStockId);
 stockRouter.put("/:id", updateStock);
 stockRouter.delete("/:id", deleteStock);
 
-module.exports = { stockRouter };
+module.exports = stockRouter;

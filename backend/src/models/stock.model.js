@@ -3,18 +3,14 @@ const { Schema } = mongoose;
 const stockSchema = new Schema(
 {
 
-  productName: 
+  product: 
   {
-    type: String
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Product'
     ,required: true
     ,trim: true
   },
-  category: 
-  {
-    type: String,
-    required: true,
-    trim: true,
-  },
+
   action: 
   {type: String
     ,enum: ["Add", "Remove", "Update"]
