@@ -6,17 +6,19 @@ const {
   getUsers,
   getUserById,
   updateUser,
-  deleteUser
-} = require("../controllers/user.controller");
+  deleteUser,
+} = require("../controllers/user.Controller");
 
-router.post("/", createUser);
+const { protect, authorize } = require("../middleware/auth");
 
-router.get("/", getUsers);
+router.post("/", protect, authorize("admin"), createUser);
 
-router.get("/:id", getUserById);
+router.get("/", protect, authorize("admin", "manager"), getUsers);
 
-router.put("/:id", updateUser);
+router.get("/:id", protect, authorize("admin", "manager"), getUserById);
 
-router.delete("/:id", deleteUser);
+router.put("/:id", protect, authorize("admin"), updateUser);
+
+router.delete("/:id", protect, authorize("admin"), deleteUser);
 
 module.exports = router;

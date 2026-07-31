@@ -1,54 +1,76 @@
 const User = require('../models/User');
+const bcrypt = require("bcryptjs");
 const generateToken = require('../utils/generateToken');
-const asyncHandler = require('../utils/asyncHandler');
-
-// @route POST /api/auth/register
-const register = asyncHandler(async (req, res) => {
-  const { name, email, password, role } = req.body;
-
-  const existingUser = await User.findOne({ email });
-  if (existingUser) {
-    return res.status(400).json({ success: false, message: 'Email already registered' });
-  }
-
-  // Only allow 'staff' by default on public register; admin creates managers/admins separately
-  const user = await User.create({ name, email, password, role: role === 'staff' ? 'staff' : 'staff' });
-
-  const token = generateToken(user._id);
-  res.status(201).json({
-    success: true,
-    data: { id: user._id, name: user.name, email: user.email, role: user.role },
-    token,
-  });
-});
 
 // @route POST /api/auth/login
-const login = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
+const login = async (req, res) => {
+  try {
+      const { email, password } = req.body;
 
-  const user = await User.findOne({ email }).select('+password');
-  if (!user || !(await user.comparePassword(password))) {
-    return res.status(401).json({ success: false, message: 'Invalid email or password' });
+      const user = await User.findOne({ email }).select('+password');
+      if (!user) {
+        return res.status(401).json({
+          success: false,
+          message: 'Invalid email or password'
+        });
+      }
+    
+      if (!user.isActive) {
+        return res.status(403).json({
+        success: false,
+        message: "Account is inactive"
+      });
+}
+      
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+          return res.status(401).json({
+          success: false,
+          message: 'Invalid email or password'
+        });
+      }
+
+    const token = generateToken(user._id);
+     return res.status(200).json({
+      success: true,
+      data: { id: user._id, name: user.name, email: user.email, role: user.role },
+      token,
+    });
+    } catch (error) {
+
+        return res.status(500).json({
+        success: false,
+        message: error.message
+      });
   }
-
-  const token = generateToken(user._id);
-  res.status(200).json({
-    success: true,
-    data: { id: user._id, name: user.name, email: user.email, role: user.role },
-    token,
-  });
-});
+};
 
 // @route POST /api/auth/logout
-// JWTs are stateless, so "logout" just tells the client to delete its token.
-// This endpoint exists mainly so the frontend has a clean, explicit action to call.
-const logout = asyncHandler(async (req, res) => {
-  res.status(200).json({ success: true, message: 'Logged out successfully' });
-});
+
+const logout = async (req, res) => {
+    try {  
+    res.status(200).json({ success: true, message: 'Logged out successfully' });
+  } catch (error) {
+
+      return res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
 
 // @route GET /api/auth/me
-const getMe = asyncHandler(async (req, res) => {
-  res.status(200).json({ success: true, data: req.user });
-});
 
-module.exports = { register, login, logout, getMe };
+const getMe = async (req, res) => {
+  try {  
+    res.status(200).json({ success: true, data: req.user });
+  } catch (error) {
+
+      return res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+module.exports = { login, logout, getMe };
