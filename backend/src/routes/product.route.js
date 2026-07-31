@@ -6,7 +6,7 @@ const {
   createProduct,
   updateProduct,
   deleteProduct,
-} = require('../controllers/productController');
+} = require('../controllers/product.controller.js');
 const { protect, authorize } = require('../middleware/auth');
 const validate = require('../middleware/validate');
 
@@ -20,7 +20,6 @@ const productValidationRules = [
   body('quantity').isInt({ min: 0 }).withMessage('Quantity must be a non-negative integer'),
 ];
 
-// All product routes require login; only admin/manager can write
 router.use(protect);
 
 router.get('/', getProducts);

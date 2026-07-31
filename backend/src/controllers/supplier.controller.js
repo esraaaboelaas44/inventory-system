@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { SupplierModel } = require("../models/Supplier.model");
+const SupplierModel  = require("../models/supplier.model");
 
 const getSupplier = (req, res) => {
   SupplierModel.find()

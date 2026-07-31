@@ -4,6 +4,12 @@ const { stockModel } = require("../models/stock.model");
 const getStock = (req, res) => {
   stockModel
     .find()
+    .populate({
+      path: 'product',
+      select: 'name category',
+      populate: { path: 'category', select: 'name' },
+    })
+    .sort({ createdAt: -1 })
     .then((stock) => {
       res.status(200).json({ msg: "success", data: stock });
     })
@@ -16,6 +22,11 @@ const getStockId = (req, res) => {
   const id = req.params.id;
   stockModel
     .findById(id)
+    .populate({
+      path: 'product',
+      select: 'name category',
+      populate: { path: 'category', select: 'name' },
+    })
     .then((stock) => {
       res.status(200).json({ msg: "success", data: stock });
     })
