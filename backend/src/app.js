@@ -32,12 +32,9 @@ app.use('/api/users', userRoutes);
 app.use("/api/products", productRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use("/api/suppliers", supplierRoutes);
-<<<<<<< HEAD
-app.use("/api/stocks", stockRouter);
-// app.use('/api/orders', orderRoutes);
-=======
 app.use("/api/orders", orderRoutes);
->>>>>>> origin/orderFeature
+app.use("/api/stocks", stockRouter);
+
 
 // 404 + centralized error handling (must be last)
 app.use(notFound);
