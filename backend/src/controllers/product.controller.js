@@ -1,7 +1,7 @@
 const Product = require('../models/product.model.js');
 const Category = require('../models/category.model.js');
 const Supplier = require('../models/supplier.model.js');
-const asyncHandler = require('../utils/asyncHandler');
+const asyncHandler = require('../utils/asyncHandler.js');
 
 const getProducts = asyncHandler(async (req, res) => {
   const { category, search, lowStock } = req.query;
