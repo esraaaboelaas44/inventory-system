@@ -1,6 +1,5 @@
 const express = require("express");
 const SupplierRouter = express.Router();
-const fr = require("fs");
 
 const {
   getSupplier,
@@ -12,7 +11,10 @@ const {
 //GET POST PUT DELETE
 SupplierRouter.get("/", getSupplier);
 SupplierRouter.post("/", addSupplier);
-SupplierRouter.put("/", updateSupplier);
-SupplierRouter.delete("/", deleteSupplier);
+SupplierRouter.put("/:id", updateSupplier);
+SupplierRouter.delete("/:id", deleteSupplier);
+
+//View supplier products and orders
+// SupplierRouter.get("/", getSupplierProducts);
 
 module.exports = SupplierRouter;

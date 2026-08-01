@@ -1,5 +1,4 @@
 const express = require('express');
-const { body } = require('express-validator');
 const {
   getCategories,
   getCategory,
@@ -8,21 +7,13 @@ const {
   deleteCategory,
 } = require('../controllers/category.controller.js');
 const { protect, authorize } = require('../middleware/auth');
-const validate = require('../middleware/validate');
 
 const router = express.Router();
 
-const categoryValidationRules = [
-  body('name').trim().notEmpty().withMessage('Category name is required'),
-  body('description').optional().trim(),
-];
-
-router.use(protect);
-
-router.get('/', getCategories);
-router.get('/:id', getCategory);
-router.post('/', createCategory);
-router.put('/:id', updateCategory);
-router.delete('/:id', deleteCategory);
+router.get('/', protect, getCategories);
+router.get('/:id', protect, getCategory);
+router.post('/', protect, authorize('admin', 'manager'), createCategory);
+router.put('/:id', protect, authorize('admin', 'manager'), updateCategory);
+router.delete('/:id', protect, authorize('admin'), deleteCategory);
 
 module.exports = router;
