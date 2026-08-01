@@ -7,7 +7,7 @@ const authRoutes = require("./routes/authRoutes");
 const productRoutes = require("./routes/productRoutes");
 // TODO (Dev 2): const categoryRoutes = require('./routes/categoryRoutes');
 const supplierRoutes = require("./routes/supplier.route");
-// TODO (Dev 3): const orderRoutes = require('./routes/orderRoutes');
+const orderRoutes = require("./routes/order.route");
 
 const { notFound, errorHandler } = require("./middleware/errorHandler");
 
@@ -29,7 +29,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 // app.use('/api/categories', categoryRoutes);
 app.use("/api/suppliers", supplierRoutes);
-// app.use('/api/orders', orderRoutes);
+app.use("/api/orders", orderRoutes);
 
 // 404 + centralized error handling (must be last)
 app.use(notFound);
