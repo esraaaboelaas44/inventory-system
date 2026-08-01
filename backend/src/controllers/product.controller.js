@@ -1,22 +1,48 @@
 const Product = require('../models/product.model.js');
 const Category = require('../models/category.model.js');
 const Supplier = require('../models/supplier.model.js');
-const asyncHandler = require('../utils/asyncHandler');
+const asyncHandler = require('../utils/asyncHandler.js');
 
 const getProducts = asyncHandler(async (req, res) => {
   const { category, search, lowStock } = req.query;
+
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 20;
+  const skip = (page - 1) * limit;
+
   const filter = {};
 
   if (category) filter.category = category;
-  if (search) filter.name = { $regex: search, $options: 'i' };
-
-  let products = await Product.find(filter).populate('category', 'name').populate('supplier', 'name').sort({ createdAt: -1 });
-
-  if (lowStock === 'true') {
-    products = products.filter((p) => p.quantity <= p.lowStockThreshold);
+  if (search) {
+    const safeSearch = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    filter.$or = [
+      { name: { $regex: safeSearch, $options: 'i' } },
+      { sku: { $regex: safeSearch, $options: 'i' } },
+      { description: { $regex: safeSearch, $options: 'i' } },
+    ];
   }
 
-  res.status(200).json({ success: true, count: products.length, data: products });
+  if (lowStock === 'true') {
+    filter.$expr = { $lte: ['$quantity', '$lowStockThreshold'] };
+  }
+
+  let products = await Product.find(filter)
+  .populate('category', 'name')
+  .populate('supplier', 'name')
+  .sort({ createdAt: -1 })
+  .skip(skip)
+  .limit(limit);
+
+  const total = await Product.countDocuments(filter);
+
+  res.status(200).json({
+  success: true,
+  count: products.length,
+  total,
+  page,
+  pages: Math.ceil(total / limit),
+  data: products,
+  });
 });
 
 const getProduct = asyncHandler(async (req, res) => {
