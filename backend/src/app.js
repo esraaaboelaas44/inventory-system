@@ -9,7 +9,7 @@ const productRoutes = require("./routes/product.route.js");
 const categoryRoutes = require('./routes/category.route.js');
 const supplierRoutes = require("./routes/supplier.route");
 const orderRoutes = require("./routes/order.route");
-const stockRouter  = require("./routes/stock.route.js");
+const {stockRouter}  = require("./routes/stock.route.js");
 
 const { notFound, errorHandler } = require("./middleware/errorHandler");
 
