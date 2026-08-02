@@ -3,8 +3,8 @@ const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
 
-const authRoutes = require('./routes/auth.routes.js');
-const userRoutes = require('./routes/user.routes.js');
+const authRoutes = require('./routes/auth.route.js');
+const userRoutes = require('./routes/user.route.js');
 const productRoutes = require("./routes/product.route.js");
 const categoryRoutes = require('./routes/category.route.js');
 const supplierRoutes = require("./routes/supplier.route");
