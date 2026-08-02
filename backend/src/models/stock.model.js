@@ -3,14 +3,18 @@ const { Schema } = mongoose;
 const stockSchema = new Schema(
 {
 
-  product: 
+  productName: 
   {
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: 'Product'
-    ,required: true
-    ,trim: true
+    type: Schema.Types.ObjectId,
+    ref: "Product",
+    required: true
   },
-
+  category: 
+  {
+    type: Schema.Types.ObjectId,
+    ref: "Category",
+    required: true
+  },
   action: 
   {type: String
     ,enum: ["Add", "Remove", "Update"]
@@ -25,9 +29,9 @@ const stockSchema = new Schema(
   },
   performedBy: 
   {
-    type: String
-    ,required: true
-    ,trim: true
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true
   }
 },{ timestamps: true , versionKey: false });
 const stockModel = mongoose.model("stockmovements", stockSchema);
