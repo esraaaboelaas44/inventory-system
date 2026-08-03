@@ -181,7 +181,7 @@ display:block;
   width: 20px;
   height: 20px;
   margin: 0;
-  accent-color: var(--button-bg);
+  accent-color: blue;
 }
 
 .forget {
