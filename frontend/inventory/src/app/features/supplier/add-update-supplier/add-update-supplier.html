@@ -1,0 +1,81 @@
+<p>add-update-supplier works!</p>
+<p>add-update-supplier works!</p>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inventra — Add / Edit Supplier</title>
+    <link rel="stylesheet" href="./add-update-supplier.css" />
+  </head>
+  <body>
+    <div class="app">
+      <!-- Main content -->
+      <main class="content">
+        <h1 class="page-title">Add / Edit Supplier</h1>
+
+        <form class="card" novalidate>
+          <div class="grid">
+            <div class="field">
+              <label for="supplierName">Supplier Name</label>
+              <input type="text" id="supplierName" placeholder="Company Name" />
+            </div>
+
+            <div class="field">
+              <label for="supplierCode">Supplier Code</label>
+              <input type="text" id="supplierCode" placeholder="SUP-2026-XXXX" />
+            </div>
+
+            <div class="field">
+              <label for="email">Email</label>
+              <input type="email" id="email" placeholder="Supplier@company.com" />
+            </div>
+
+            <div class="field">
+              <label for="address">Address</label>
+              <textarea id="address" placeholder="Address"></textarea>
+            </div>
+
+            <div class="field">
+              <label for="phone">Primary phone</label>
+              <input type="tel" id="phone" placeholder="+1(000) 000-0000" />
+            </div>
+
+            <div class="field">
+              <label for="taxNumber">TaxNumber</label>
+              <input type="text" id="taxNumber" placeholder="TaxIdetifier" />
+            </div>
+          </div>
+
+          <div class="status-block">
+            <span class="status-label">Status</span>
+            <div class="toggle-row">
+              <button
+                type="button"
+                class="toggle"
+                id="statusToggle"
+                aria-pressed="false"
+                aria-label="Supplier is Active"
+              ></button>
+              <span class="toggle-text">Supplier is Active</span>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="button" class="btn btn-cancel">Cancel</button>
+            <button type="submit" class="btn btn-save">Save Changes</button>
+          </div>
+        </form>
+      </main>
+    </div>
+
+    <script>
+      const toggle = document.getElementById('statusToggle');
+      toggle.addEventListener('click', () => {
+        const active = toggle.getAttribute('aria-pressed') === 'true';
+        toggle.setAttribute('aria-pressed', String(!active));
+        toggle.classList.toggle('on', !active);
+      });
+    </script>
+  </body>
+</html>
