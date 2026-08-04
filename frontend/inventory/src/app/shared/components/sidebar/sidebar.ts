@@ -15,7 +15,7 @@ export class Sidebar {
 
   user = { name: 'Ahmed Ali', role: 'Admin' };
   userMenuOpen = false;
-
+  hoveredItem: string | null = null;
   expanded = false;
   isMobile = false;
 

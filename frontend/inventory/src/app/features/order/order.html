@@ -158,23 +158,21 @@
               </div>
 
               <div class="flex items-center gap-2">
-                <input
-                  type="text"
-                  id="supplierFilterInput"
-                  placeholder="Filter by supplier ID"
-                  class="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900 w-56"
-                />
-                <button
-                  type="button"
-                  id="supplierFilterBtn"
-                  class="px-3 py-2 rounded-lg bg-slate-900 text-white text-sm font-medium hover:bg-slate-700"
+                <select
+                  id="type"
+                  name="type"
+                  required
+                  class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900"
                 >
-                  Filter
-                </button>
+                  <option value="" disabled selected>Filter by Supplier</option>
+                  @for (supplier of SUPPLIERS; track supplier.name) {
+                    <option>{{ supplier.name }}</option>
+                  }
+                </select>
                 <button
                   type="button"
                   id="clearFilterBtn"
-                  class="px-3 py-2 rounded-lg border border-slate-300 text-slate-600 text-sm font-medium hover:bg-slate-50"
+                  class="px-3 py-2 rounded-lg bg-slate-900 text-white text-sm font-medium hover:bg-slate-700"
                 >
                   Clear
                 </button>
