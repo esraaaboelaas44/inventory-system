@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<div class="w-64 bg-[#103645] text-white flex flex-col h-full">
+
+  <div class="p-6 text-2xl font-bold">
+    Inventra
+  </div>
+
+  <nav class="flex-1 px-4 space-y-1">
+    @for (tab of tabs; track tab) {
+      <a
+        (click)="selectTab(tab)"
+        class="flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-colors"
+        [ngClass]="activeTab === tab ? 'bg-white/10 text-white font-semibold' : 'text-gray-300 hover:bg-white/5 hover:text-white'"
+      >
+        {{ tab }}
+      </a>
+    }
+  </nav>
+
+  <div class="p-4">
+    <button
+      (click)="onLogout()"
+      class="w-full flex items-center gap-2 px-4 py-3 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors cursor-pointer"
+    >
+      Log out
+    </button>
+  </div>
+
+</div>
