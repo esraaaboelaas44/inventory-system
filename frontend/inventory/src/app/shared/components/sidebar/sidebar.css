@@ -1,0 +1,239 @@
+/* ===== المتغيرات الأساسية للسايدبار ===== */
+:host {
+  --nav-bg-top: #04182b;
+  --nav-bg-bottom: #072a45;
+  --nav-text: #cbd5e1;
+  --nav-text-strong: #ffffff;
+  --nav-teal: #14b8a6;
+  --nav-active: #0f7c74;
+
+  display: block;
+  width: 246px;
+  flex: 0 0 246px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+}
+
+/* ===== الحاوية العامة ===== */
+.sidebar {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 22px 12px 16px;
+  background: linear-gradient(180deg, var(--nav-bg-top) 0%, var(--nav-bg-bottom) 100%);
+border-radius: 0 22px 22px 0;
+  overflow: hidden;
+  font-family: inherit;
+}
+
+/* ===== اللوجو ===== */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 10px 26px;
+}
+.brand-mark { width: 30px; height: 30px; color: var(--nav-teal); }
+.brand-mark svg { width: 100%; height: 100%; }
+.brand-text { display: flex; flex-direction: column; line-height: 1.2; }
+.brand-title {
+  color: var(--nav-text-strong);
+  font-size: 25px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+}
+.brand-sub { color: var(--nav-teal); font-size: 11.5px; font-weight: 500; }
+
+/* ===== لينكات القائمة ===== */
+.nav { display: flex; flex-direction: column; gap: 2px; }
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: var(--nav-text);
+  font-size: 14.5px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+.nav-link:hover { background: rgba(255, 255, 255, 0.06); color: #fff; }
+.nav-icon { width: 20px; height: 20px; flex-shrink: 0; }
+
+/* ===== العنصر المفعّل ===== */
+.nav-link.active {
+  background: var(--nav-active);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 6px 16px rgba(15, 124, 116, 0.35);
+}
+
+/* ===== الجزء السفلي (المستخدم + الخروج) ===== */
+.sidebar-bottom { margin-top: auto; display: flex; flex-direction: column; gap: 8px; }
+
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  text-align: start;
+}
+.user-avatar {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+.user-info { display: flex; flex-direction: column; line-height: 1.25; }
+.user-info strong { color: #fff; font-size: 14px; font-weight: 600; }
+.user-info small { color: var(--nav-teal); font-size: 11.5px; }
+.user-chevron {
+  width: 18px; height: 18px;
+  margin-inline-start: auto;
+  color: var(--nav-text);
+  transition: transform 0.2s ease;
+}
+.user-chevron.open { transform: rotate(180deg); }
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--nav-text);
+  font-size: 14.5px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.logout-btn:hover { background: rgba(255, 255, 255, 0.06); color: #fff; }
+
+/* ===== الزخرفة (مربعات) ===== */
+.deco { position: absolute; inset-inline: 0; bottom: 0; height: 70px; pointer-events: none; }
+.deco .sq { position: absolute; display: block; background: var(--nav-teal); opacity: 0.35; border-radius: 2px; }
+.sq.s1 { width: 9px;  height: 9px;  left: 8px;   bottom: 28px; }
+.sq.s2 { width: 13px; height: 13px; left: 30px;  bottom: 6px; opacity: 0.5; }
+.sq.s3 { width: 7px;  height: 7px;  left: 92px;  bottom: 44px; opacity: 0.25; }
+.sq.s4 { width: 15px; height: 15px; left: 132px; bottom: 12px; opacity: 0.45; }
+.sq.s5 { width: 10px; height: 10px; left: 172px; bottom: 34px; opacity: 0.3; }
+.sq.s6 { width: 12px; height: 12px; left: 206px; bottom: 4px;  opacity: 0.4; }
+
+/* ===== زرار الـrail: مربع بحدود ناعمة (مخفي على الديسكتوب) ===== */
+.rail-toggle {
+  display: none;
+  position: fixed;
+  top: 14px;
+  z-index: 60;
+
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  padding: 0;
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.055);
+  color: #e2e8f0;
+  cursor: pointer;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    0 4px 12px rgba(2, 12, 24, 0.45);
+  backdrop-filter: blur(6px);
+  transition:
+    inset-inline-start 0.26s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.12s ease;
+}
+.rail-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(20, 184, 166, 0.45);
+  color: #fff;
+}
+.rail-toggle:active { transform: scale(0.94); }
+.rail-toggle:focus-visible { outline: 2px solid var(--nav-teal); outline-offset: 2px; }
+
+/* ===== الأيقونة جوه الزرار ===== */
+.rail-icon { width: 22px; height: 22px; }
+.rail-icon g.flipped { transform: rotate(180deg); transform-origin: 12px 12px; }
+
+/* ===== الخلفية الشفافة ===== */
+.backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(4, 24, 43, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.26s ease;
+}
+
+/* ===== الموبايل: rail ضيق افتراضي + توسيع فوق المحتوى ===== */
+@media (max-width: 900px) {
+  /* الهوست يحجز عرض الـrail بس عشان المحتوى ميتزحزحش */
+  :host { width: 56px; flex-basis: 56px; height: 100dvh; position: static; }
+
+  .rail-toggle { display: grid; inset-inline-start: 34px; }
+  .rail-toggle[aria-expanded='true'] { inset-inline-start: 224px; }
+
+  .backdrop { display: block; }
+  .backdrop.show { opacity: 1; pointer-events: auto; }
+
+  .sidebar {
+    position: fixed;
+    inset-block: 0;
+    inset-inline-start: 0;
+    z-index: 50;
+    width: 56px;
+    height: 100vh;
+    padding-inline: 8px;
+    transition: width 0.26s ease;
+  }
+
+  /* --- الحالة المتقلّصة: أيقونات بس --- */
+  .brand-text,
+  .nav-link span,
+  .logout-btn span,
+  .user-info,
+  .user-chevron { display: none; }
+
+  .brand { padding: 4px 0 20px; justify-content: center; }
+  .brand-mark { width: 24px; height: 24px; }
+  .nav-link,
+  .logout-btn { justify-content: center; padding: 12px 0; }
+  .nav-link.active { box-shadow: none; }
+  .user-card { justify-content: center; padding: 8px; }
+  .deco { display: none; }
+
+  /* --- الحالة المتوسّعة: يرجع كل حاجة تظهر --- */
+  .sidebar.expanded { width: 246px; padding-inline: 12px; }
+  .sidebar.expanded .brand { justify-content: flex-start; padding-inline-start: 10px; }
+  .sidebar.expanded .brand-mark { width: 30px; height: 30px; }
+  .sidebar.expanded .brand-text,
+  .sidebar.expanded .user-info { display: flex; }
+  .sidebar.expanded .nav-link span,
+  .sidebar.expanded .logout-btn span { display: inline; }
+  .sidebar.expanded .user-chevron { display: block; }
+  .sidebar.expanded .nav-link,
+  .sidebar.expanded .logout-btn { justify-content: flex-start; padding: 12px 14px; }
+  .sidebar.expanded .user-card { justify-content: flex-start; padding: 12px; }
+  .sidebar.expanded .deco { display: block; }
+}

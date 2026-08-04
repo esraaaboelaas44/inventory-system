@@ -1,0 +1,105 @@
+<button
+  type="button"
+  class="rail-toggle"
+  (click)="toggleWidth()"
+  [attr.aria-expanded]="expanded"
+  aria-controls="app-sidebar"
+  [attr.aria-label]="expanded ? 'Collapse sidebar' : 'Expand sidebar'">
+  <svg class="rail-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <g stroke="currentColor" stroke-width="1.9" stroke-linecap="round" [class.flipped]="expanded">
+      <path d="M3 6h8" />
+      <path d="M3 10h5.5" />
+      <path d="M3 14h8" />
+      <path d="M3 18h4" />
+    </g>
+
+    <g
+      transform="translate(9.4 4.6) scale(0.6)"
+      stroke="currentColor"
+      stroke-width="2.6"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M10 9.5V4a2 2 0 0 1 4 0v6" />
+      <path d="M14 9.5V8a2 2 0 0 1 4 0v2" />
+      <path d="M18 10.5V9.5a2 2 0 0 1 4 0V14a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15V4a2 2 0 0 1 4 0" />
+    </g>
+  </svg>
+</button>
+
+<div class="backdrop" [class.show]="isMobile && expanded" (click)="toggleWidth()"></div>
+
+<aside class="sidebar" id="app-sidebar" [class.expanded]="expanded">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M3 3h7v7H3z" fill="currentColor" opacity=".55" />
+        <path d="M13 6h6v6h-6z" fill="currentColor" />
+        <path d="M6 13h6v6H6z" fill="currentColor" opacity=".8" />
+      </svg>
+    </span>
+    <span class="brand-text">
+      <strong class="brand-title">Inventa</strong>
+      <small class="brand-sub">Inventory Management</small>
+    </span>
+  </div>
+
+    <nav class="nav" aria-label="Main navigation">
+        @for (item of SaidItems; track item.route) {
+            <a
+            class="nav-link"
+            [class.active]="isActive(item)"
+            [routerLink]="item.route"
+            (click)="setActive(item)"
+            >
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                @for (d of item.icon; track d) {
+                <path
+                    [attr.d]="d"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                />
+                }
+            </svg>
+
+            <span>{{ item.label }}</span>
+            </a>
+        }
+    </nav>
+
+  <div class="sidebar-bottom">
+    <button type="button" class="user-card" (click)="toggleUserMenu()">
+      <span class="user-avatar">{{ userInitial }}</span>
+      <span class="user-info">
+        <strong>{{ user.name }}</strong>
+        <small>{{ user.role }}</small>
+      </span>
+      <svg class="user-chevron" [class.open]="userMenuOpen" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </button>
+
+    <button type="button" class="logout-btn" (click)="logout()">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            @for (d of logoutIcon; track d) {
+            <path
+                [attr.d]="d"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+            }
+        </svg>
+
+        <span>Logout</span>
+    </button>
+  </div>
+
+  <div class="deco" aria-hidden="true">
+    <i class="sq s1"></i><i class="sq s2"></i><i class="sq s3"></i>
+    <i class="sq s4"></i><i class="sq s5"></i><i class="sq s6"></i>
+  </div>
+</aside>
