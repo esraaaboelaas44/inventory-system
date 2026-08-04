@@ -258,30 +258,75 @@
           </div>
         </div>
       </div>
-
-      <!-- Details modal -->
-      <div
-        id="detailsModal"
-        class="hidden fixed inset-0 bg-slate-900/50 flex items-center justify-center p-4 z-50"
-      >
-        <div class="bg-white rounded-xl shadow-lg max-w-lg w-full">
-          <div class="p-6 flex items-start justify-between border-b border-slate-200">
-            <h3 class="text-lg font-bold text-slate-900">Order Details</h3>
-            <button
-              type="button"
-              id="closeModalBtn"
-              class="text-slate-400 hover:text-slate-900 text-xl leading-none"
-            >
-              &times;
-            </button>
-          </div>
-          <div
-            id="modalBody"
-            class="p-6 text-sm text-slate-700 space-y-2 max-h-96 overflow-y-auto"
-          ></div>
-        </div>
-      </div>
     </div>
+
+    <!-- ORDER DETAILS MODAL -->
+    <!doctype html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Order Details</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/3.4.3/tailwind.min.js"></script>
+        <style>
+          body {
+            font-family: 'Segoe UI', ui-sans-serif, system-ui, sans-serif;
+            background: #f1f5f9;
+          }
+          /* Custom scrollbar */
+          ::-webkit-scrollbar {
+            width: 6px;
+          }
+          ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+          }
+          ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+          }
+          ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+          }
+          /* Modal animation */
+          @keyframes modalIn {
+            from {
+              opacity: 0;
+              transform: scale(0.95) translateY(-10px);
+            }
+            to {
+              opacity: 1;
+              transform: scale(1) translateY(0);
+            }
+          }
+          .modal-animate {
+            animation: modalIn 0.25s ease-out;
+          }
+          /* Status pulse for pending */
+          @keyframes pulse {
+            0%,
+            100% {
+              opacity: 1;
+            }
+            50% {
+              opacity: 0.7;
+            }
+          }
+          .status-pending {
+            animation: pulse 2s ease-in-out infinite;
+          }
+          /* Close button hover effect */
+          .close-btn:hover {
+            transform: rotate(90deg);
+          }
+        </style>
+      </head>
+      <body>
+        <!-- OVERLAY WITH BLUR -->
+
+        <!-- POPUP -->
+      </body>
+    </html>
 
     <script>
       // Nav bar: click a button, smooth-scroll to its target section

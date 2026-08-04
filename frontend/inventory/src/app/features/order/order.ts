@@ -181,10 +181,15 @@ export class Order {
     );
     if (!confirmed) return;
 
-    // Update in the underlying array so the table reflects the change too
+    // Update status
     const target = this.orders.find((o) => o.orderNumber === order.orderNumber);
     if (target) target.status = 'cancelled';
-
+    if (this.selectedOrder && this.selectedOrder.orderNumber === order.orderNumber) {
+      this.selectedOrder.status = 'cancelled';
+    }
+    alert(`Order ${order.orderNumber} has been cancelled successfully.`);
     this.closeModal();
   }
+
+  //get supplier id
 }
