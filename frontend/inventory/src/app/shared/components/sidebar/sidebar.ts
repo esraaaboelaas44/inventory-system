@@ -11,7 +11,6 @@ import { Isidebar } from '../../models/isidebar';
   styleUrls: ['./sidebar.css'],
 })
 export class Sidebar {
-
   activeItem = 'Stock';
 
   user = { name: 'Ahmed Ali', role: 'Admin' };
@@ -33,7 +32,11 @@ export class Sidebar {
     {
       label: 'Products',
       route: '/products',
-      icon: ['M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z','m3.3 7 8.7 5 8.7-5','M12 22V12',],
+      icon: [
+        'M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z',
+        'm3.3 7 8.7 5 8.7-5',
+        'M12 22V12',
+      ],
     },
     // {
     //   label: 'Categories',
@@ -42,19 +45,29 @@ export class Sidebar {
     // },
     {
       label: 'Suppliers',
-      route: '/suppliers',
-      icon: ['M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2','M13 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0','M22 21v-2a4 4 0 0 0-3-3.87','M16 3.13a4 4 0 0 1 0 7.75',],
+      route: '/supplier',
+      icon: [
+        'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2',
+        'M13 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0',
+        'M22 21v-2a4 4 0 0 0-3-3.87',
+        'M16 3.13a4 4 0 0 1 0 7.75',
+      ],
     },
     {
       label: 'Orders',
-      route: '/orders',
-      icon: ['M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2','M9 2h6v4H9z','M9 12h6','M9 16h4',],
+      route: '/order',
+      icon: [
+        'M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2',
+        'M9 2h6v4H9z',
+        'M9 12h6',
+        'M9 16h4',
+      ],
     },
     {
       label: 'Stock',
       route: '/stock',
       icon: ['M4 4h16v4H4z', 'M6 8v11a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V8', 'M10 12h4'],
-    }
+    },
   ];
 
   logoutIcon: string[] = ['M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4', 'm16 17 5-5-5-5', 'M21 12H9'];
@@ -62,7 +75,7 @@ export class Sidebar {
   @HostListener('window:resize')
   checkScreen(): void {
     this.isMobile = window.innerWidth <= 900;
-    if (!this.isMobile) this.expanded = true; 
+    if (!this.isMobile) this.expanded = true;
   }
 
   toggleWidth(): void {

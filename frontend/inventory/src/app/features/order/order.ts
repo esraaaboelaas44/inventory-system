@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { iOrder } from '../../models/iOrder';
+import { Sidebar } from '../../shared/components/sidebar/sidebar';
 
 @Component({
   selector: 'app-order',
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, Sidebar],
   templateUrl: './order.html',
   styleUrl: './order.css',
 })
