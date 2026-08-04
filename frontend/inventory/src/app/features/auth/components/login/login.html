@@ -1,61 +1,82 @@
-<!DOCTYPE html>
-<div class="min-h-screen flex">
+<div class="page">
+  <section class="card">
 
-  <!-- Left -->
-  <div class="w-full lg:w-1/2 flex items-center justify-center bg-white">
+    <!-- LEFT SIDE -->
 
-    <div class="w-105">
+    <div class="left-panel">
 
-      <h1 class="text-5xl font-bold text-[#11194d] mb-6">
-        Inventra
-      </h1>
+      <div class="left-inner">
 
-      <p class="text-gray-600 text-lg mb-12">
-        See your growth and get support!
-      </p>
+        <img
+          src="logo.png"
+          alt="Inventra"
+          class="logo"
+        />
 
+        <p class="subtitle" style="font-size: 16px; font-weight:600;;">
+          See your growth and get support!
+        </p>
 
-      <form>
+        <form
+          class="login-form"
+          (ngSubmit)="login()"
+        >
 
-        <div class="mb-6">
+          <div class="form-group">
 
-          <label class="block font-semibold mb-2">
-            Username
-          </label>
+            <label style="font-size: 18px;font-weight: 500; font-family:'Poppins', sans-serif;" for="username">
+              Username
+            </label>
 
-          <input
-          type="text"
-          placeholder="Enter your username"
-          class="w-full bg-gray-100 border border-gray-300 rounded-lg p-4 outline-none focus:ring-2 focus:ring-indigo-700"
-          >
+            <input
+              id="username"
+              name="username"
+              type="text"
+              placeholder="Enter your username"
+              [(ngModel)]="username"
+            />
 
-        </div>
+          </div>
 
+          <div class="form-group">
 
-        <div class="mb-6">
+            <label style="font-size: 18px;font-weight: 500; font-family:'Poppins', sans-serif" for="password">
+              Password
+            </label>
 
-          <label class="block font-semibold mb-2">
-            Password
-          </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              placeholder="Enter your password"
+              [(ngModel)]="password"
+            />
 
-          <input
-          type="password"
-          placeholder="Enter your password"
-          class="w-full bg-gray-100 border border-gray-300 rounded-lg p-4 outline-none focus:ring-2 focus:ring-indigo-700"
-          >
+          </div>
 
-        </div>
+          <div class="options">
 
-        <div class="flex justify-between mb-8">
+            <label class="remember">
 
-          <label class="flex items-center gap-2">
-            <input type="checkbox">
-            Remember me
-          </label>
+              <input 
+                type="checkbox"
+                name="remember"
+                [(ngModel)]="rememberMe"
+              />
 
-          <a class="text-[#11194d] font-semibold">
-            Forgot password ?
-          </a>
+              <span style="font-family:'Poppins', sans-serif">
+                Remember me
+              </span>
+
+            </label>
+
+            <a style="font-family:'Poppins', sans-serif"
+              href="#"
+              class="forget"
+              (click)="$event.preventDefault()"
+            >
+              Forget password ?
+            </a>
 
         </div>
 
@@ -66,30 +87,148 @@
           Login
         </button>
 
+        </form>
 
-      </form>
-
-
-    </div>
-
-  </div>
-
-
-
-
-  <!-- Right -->
-
-  <div class="hidden lg:flex w-1/2 bg-[#103746] items-center justify-center">
-
-    <div class="bg-white rounded-3xl w-105 h-75 flex items-center justify-center">
-
-      <h2 class="text-4xl font-bold text-[#11194d]">
-        Inventra
-      </h2>
+      </div>
 
     </div>
 
-  </div>
+    <!-- RIGHT SIDE -->
 
+    <div class="right-panel">
+
+      <!-- Decorative Squares -->
+
+      <span class="square s1"></span>
+      <span class="square s2"></span>
+      <span class="square s3"></span>
+      <span class="square s4"></span>
+      <span class="square s5"></span>
+      <span class="square s6"></span>
+      <span class="square s7"></span>
+      <span class="square s8"></span>
+      <span class="square s9"></span>
+      <span class="square s10"></span>
+
+      <!-- Chart -->
+
+      <div class="chart-card">
+
+        <svg
+          class="chart-svg"
+          viewBox="0 0 620 330"
+        >
+
+          <rect
+            x="0"
+            y="0"
+            width="620"
+            height="330"
+            rx="20"
+            fill="white"
+          />
+
+          <g stroke="#ECECEC">
+
+            <line x1="40" y1="50" x2="580" y2="50"/>
+
+            <line x1="40" y1="95" x2="580" y2="95"/>
+
+            <line x1="40" y1="140" x2="580" y2="140"/>
+
+            <line x1="40" y1="185" x2="580" y2="185"/>
+
+            <line x1="40" y1="230" x2="580" y2="230"/>
+
+            <line x1="40" y1="275" x2="580" y2="275"/>
+
+          </g>
+
+          <path
+            d="M55 250
+            C90 190 120 205 145 170
+            S195 195 215 150
+            S260 180 285 125
+            S330 160 360 105
+            S405 130 440 75
+            S500 90 565 30"
+            fill="none"
+            stroke="#BFCB5B"
+            stroke-width="4"
+            stroke-linecap="round"
+          />
+
+          <path
+            d="M55 175
+            C160 140 250 110 565 45"
+            fill="none"
+            stroke="#EF833C"
+            stroke-width="3"
+            stroke-dasharray="7 7"
+          />
+
+          <path
+            d="M55 225
+            C180 180 300 150 565 95"
+            fill="none"
+            stroke="#8B9873"
+            stroke-width="3"
+            stroke-dasharray="7 7"
+          >
+
+          </path>
+
+        </svg>
+
+      </div>
+
+      <!-- DONUT -->
+
+      <div class="donut-card">
+
+        <svg
+          class="donut-svg"
+          viewBox="0 0 220 220"
+        >
+
+          <circle
+            cx="110"
+            cy="110"
+            r="88"
+            fill="none"
+            stroke="#DCE5E7"
+            stroke-width="28"
+          />
+
+          <circle
+          cx="110"
+          cy="110"
+          r="88"
+          fill="none"
+          stroke="#080E47"
+          stroke-width="28"
+          stroke-linecap="round"
+          stroke-dasharray="258 182"
+          transform="rotate(-90 110 110)"
+          />
+
+
+          <text
+            x="116"
+            y="123"
+            text-anchor="middle"
+            font-size="38"
+            font-weight="700"
+          >
+            68%
+          </text>
+
+        </svg>
+
+      </div>
+
+    </div>
+
+  </section>
 
 </div>

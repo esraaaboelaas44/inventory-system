@@ -9,9 +9,9 @@
   },
   "include": [
     "src/**/*.d.ts",
-    "src/**/*.ts"
+    "src/**/*.spec.ts"
   ],
-  "angularCompilerOptions": {
+    "angularCompilerOptions": {
     "strictTemplates": true
-  }
+}
 }
