@@ -2,7 +2,17 @@ const Product = require('../models/product.model.js');
 const Category = require('../models/category.model.js');
 const Supplier = require('../models/supplier.model.js');
 const asyncHandler = require('../utils/asyncHandler.js');
-const {createStock} = require("../utils/creatStock.js");
+const { createStock } = require('../utils/creatStock.js');
+
+const getCategoryName = async (category) => {
+  if (!category) return 'Uncategorized';
+  if (typeof category === 'object' && category.name) return category.name;
+
+  const categoryDoc = await Category.findById(category).select('name');
+  return categoryDoc?.name || 'Uncategorized';
+};
+
+const getActorName = (user) => user?.name || user?.email || 'System';
 
 const getProducts = asyncHandler(async (req, res) => {
   const { category, search, lowStock } = req.query;
@@ -56,23 +66,25 @@ const getProduct = asyncHandler(async (req, res) => {
 
 const createProduct = asyncHandler(async (req, res) => {
   const product = await Product.create(req.body);
-  await createStock(product._id,"Add",product.quantity,product.category,req.user._id);
+  const categoryName = await getCategoryName(product.category);
+  await createStock(product.name, categoryName, 0, product.quantity, 'Add', getActorName(req.user));
   res.status(201).json({ success: true, data: product });
-  
 });
 
 
 const updateProduct = asyncHandler(async (req, res) => {
+  const oldProduct = await Product.findById(req.params.id);
+  if (!oldProduct) {
+    return res.status(404).json({ success: false, message: 'Product not found' });
+  }
+
   const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
   });
-  if (!product) {
-    return res.status(404).json({ success: false, message: 'Product not found' });
-  }
-  await createStock(product._id,"Update",product.quantity,product.category,req.user._id);
+  const categoryName = await getCategoryName(product.category);
+  await createStock(product.name, categoryName, oldProduct.quantity, product.quantity, 'Update', getActorName(req.user));
   res.status(200).json({ success: true, data: product });
-  
 });
 
 const deleteProduct = asyncHandler(async (req, res) => {
@@ -80,9 +92,9 @@ const deleteProduct = asyncHandler(async (req, res) => {
   if (!product) {
     return res.status(404).json({ success: false, message: 'Product not found' });
   }
-  await createStock(product._id,"Remove",product.quantity,product.category,req.user._id);
+  const categoryName = await getCategoryName(product.category);
+  await createStock(product.name, categoryName, product.quantity, 0, 'Remove', getActorName(req.user));
   res.status(200).json({ success: true, message: 'Product deleted' });
-  
 });
 
 module.exports = { getProducts, getProduct, createProduct, updateProduct, deleteProduct };

@@ -3,17 +3,17 @@ const { Schema } = mongoose;
 const stockSchema = new Schema(
 {
 
-  productName: 
+  Name: 
   {
-    type: Schema.Types.ObjectId,
-    ref: "Product",
+    type: String,
     required: true
+    ,trim: true
   },
   category: 
   {
-    type: Schema.Types.ObjectId,
-    ref: "Category",
-    required: true
+    type: String,
+    required: true,
+    trim: true,
   },
   action: 
   {type: String
@@ -27,13 +27,19 @@ const stockSchema = new Schema(
     ,required: true
     ,trim: true
   },
+  newquantity: {
+    type: Number,
+    required: true
+  },
   performedBy: 
   {
-    type: Schema.Types.ObjectId,
-    ref: "User",
+    type: String,
     required: true
+    ,trim: true
   }
-},{ timestamps: true , versionKey: false });
+},
+{ timestamps: true , versionKey: false }
+);
 const stockModel = mongoose.model("stockmovements", stockSchema);
 
 module.exports = { stockModel };
