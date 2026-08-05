@@ -5,7 +5,7 @@ import { AddUpdateSupplier } from './features/supplier/add-update-supplier/add-u
 import { Supplier } from './features/supplier/supplier';
 import { Order } from './features/order/order';
 import { DetailedOrder } from './features/order/detailed-order/detailed-order';
-
+import { GetSupplier } from './features/supplier/get-supplier/get-supplier';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: Login },
@@ -15,6 +15,7 @@ export const routes: Routes = [
     children: [
       { path: '', component: Supplier },
       { path: 'add-update-supplier', component: AddUpdateSupplier },
+      { path: 'app-get-supplier', component: GetSupplier },
     ],
   },
   {
