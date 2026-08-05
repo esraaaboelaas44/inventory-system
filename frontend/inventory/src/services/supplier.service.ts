@@ -16,10 +16,14 @@ export class SupplierService {
     }
     //kk
 
-    return this.http.get<iSupplierRes>('http://localhost:61272/api/suppliers/').pipe(
+    return this.http.get<iSupplierRes>('http://localhost:5000/api/suppliers/').pipe(
       tap((res) => {
         this.SUPPLIERS = res.data;
       }),
     );
+  }
+
+  addSupplier(data: iSupplier): any {
+    return this.http.post('http://localhost:5000/api/suppliers/', data);
   }
 }
