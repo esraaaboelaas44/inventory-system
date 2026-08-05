@@ -8,6 +8,5 @@ export interface iSupplier {
     email: String;
     phone: String;
   };
-  isActive: boolean;
   industry: String;
 }
