@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { iSupplier } from '../../../../models/iSupplier';
 
 @Component({
@@ -10,4 +10,15 @@ import { iSupplier } from '../../../../models/iSupplier';
 export class SupplierCard {
   @Input()
   supplier!: iSupplier;
+  @Output() deleteSupplier = new EventEmitter<String>();
+
+  onDelete(event: Event): void {
+    event.stopPropagation();
+
+    console.log(`pressed delete on ${this.supplier.name}`);
+    if (confirm(`Are you sure you want to delete ${this.supplier.name}?`)) {
+      this.deleteSupplier.emit(`${this.supplier._id}`);
+    }
+    this.deleteSupplier.emit(this.supplier._id);
+  }
 }

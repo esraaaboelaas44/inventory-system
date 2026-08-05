@@ -1,5 +1,5 @@
 export interface iOrder {
-  _id: String;
+  _id: string;
   createdAt: String;
   updatedAt: String;
   orderNumber: String;

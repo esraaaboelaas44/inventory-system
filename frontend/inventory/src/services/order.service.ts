@@ -8,4 +8,9 @@ export class OrderService {
   getOrders(): any {
     return this.http.get<iOrder>('http://localhost:5000/api/orders');
   }
+  getOrderDetails(id: string) {
+    return this.http.get<{ msg: string; data: iOrder }>(
+      `http://localhost:5000/api/orders/app-detailed-order/${id}`,
+    );
+  }
 }

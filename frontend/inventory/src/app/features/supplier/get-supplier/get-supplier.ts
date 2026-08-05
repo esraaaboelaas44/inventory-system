@@ -29,11 +29,4 @@ export class GetSupplier {
     });
     console.log(this.SUPPLIERS);
   }
-  // getSuppliers() {
-  //   this.SupplierService.getSuppliers().subscribe({
-  //     next: (res: any) => {
-  //       console.log(res);
-  //     },
-  //   });
-  // }
 }
