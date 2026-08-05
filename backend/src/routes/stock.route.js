@@ -4,13 +4,13 @@ const {getStock,getStockId,getLowStockProducts,getAdd,getRemove,getUpdate,findSt
 const { protect, authorize } = require('../middleware/auth');
 
 //route
-stockRouter.get("/",protect, authorize("Admin","Manager"),getStock);
-stockRouter.get("/:id",protect, authorize("Admin","Manager"), getStockId);
-stockRouter.get("/low",protect, authorize("Admin","Manager"), getLowStockProducts);   
-stockRouter.get("/add",protect, authorize("Admin","Manager"), getAdd);
-stockRouter.get("/update",protect, authorize("Admin","Manager"), getUpdate);
-stockRouter.get("/remove",protect, authorize("Admin","Manager"), getRemove);
-stockRouter.get("/find",protect, authorize("Admin","Manager"), findStock);
+stockRouter.get("/",protect, authorize("admin","manager"),getStock);
+stockRouter.get("/low",protect, authorize("admin","manager"), getLowStockProducts);   
+stockRouter.get("/add",protect, authorize("admin","manager"), getAdd);
+stockRouter.get("/update",protect, authorize("admin","manager"), getUpdate);
+stockRouter.get("/remove",protect, authorize("admin","manager"), getRemove);
+stockRouter.get("/find",protect, authorize("admin","manager"), findStock);
+stockRouter.get("/:id",protect, authorize("admin","manager"), getStockId);
 
 
 module.exports = { stockRouter };
