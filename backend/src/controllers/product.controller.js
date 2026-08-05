@@ -56,7 +56,7 @@ const getProduct = asyncHandler(async (req, res) => {
 
 const createProduct = asyncHandler(async (req, res) => {
   const product = await Product.create(req.body);
-  await createStock(product._id,"Add",product.quantity,product.category,req.user._id);
+  await createStock(product.name,product.category?.name,0,product.quantity,"Add",req.user.name);
   res.status(201).json({ success: true, data: product });
   
 });
@@ -70,7 +70,7 @@ const updateProduct = asyncHandler(async (req, res) => {
   if (!product) {
     return res.status(404).json({ success: false, message: 'Product not found' });
   }
-  await createStock(product._id,"Update",product.quantity,product.category,req.user._id);
+  await createStock(product.name,product.category?.name,oldProduct.quantity,product.quantity,"Update",req.user.name);
   res.status(200).json({ success: true, data: product });
   
 });
@@ -80,7 +80,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
   if (!product) {
     return res.status(404).json({ success: false, message: 'Product not found' });
   }
-  await createStock(product._id,"Remove",product.quantity,product.category,req.user._id);
+  await createStock(product.name,product.category?.name,product.quantity,0,"Remove",req.user.name);
   res.status(200).json({ success: true, message: 'Product deleted' });
   
 });
