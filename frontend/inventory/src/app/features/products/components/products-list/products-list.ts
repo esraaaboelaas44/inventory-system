@@ -1,15 +1,14 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { forkJoin } from 'rxjs';
 import { Product } from '../../../../models/product';
+import { Category } from '../../../../models/category';
+import { Supplier } from '../../../../models/supplier';
+import { CategoryService } from '../../../../core/services/category.service';
+import { ProductPayload, ProductService } from '../../../../core/services/product.service';
+import { SupplierService } from '../../../../core/services/supplier.service';
 import { Sidebar } from '../../../../shared/components/sidebar/sidebar';
-
-interface Category {
-  _id: string;
-  name: string;
-  description: string;
-  status: 'active' | 'inactive';
-}
 
 @Component({
   selector: 'app-products-list',
@@ -18,110 +17,17 @@ interface Category {
   templateUrl: './products-list.html',
   styleUrls: ['./products-list.css'],
 })
-export class ProductsList {
+export class ProductsList implements OnInit {
   private readonly fb = inject(FormBuilder);
+  private readonly productService = inject(ProductService);
+  private readonly categoryService = inject(CategoryService);
+  private readonly supplierService = inject(SupplierService);
 
-  products: Product[] = [
-    {
-      _id: '1',
-      name: 'Samsung Galaxy A13',
-      sku: 'ELEC-101',
-      description: 'Samsung Galaxy A13 - Electronics',
-      category: { _id: 'c1', name: 'Electronics' },
-      supplier: { _id: 's1', name: 'Cairo Tech Distributors' },
-      price: 220.0,
-      quantity: 40,
-      lowStockThreshold: 10,
-      status: 'active',
-      isLowStock: false,
-    },
-    {
-      _id: '2',
-      name: 'iPhone 13',
-      sku: 'ELEC-102',
-      description: 'iPhone 13 - Electronics',
-      category: { _id: 'c1', name: 'Electronics' },
-      supplier: { _id: 's1', name: 'Cairo Tech Distributors' },
-      price: 799.0,
-      quantity: 8,
-      lowStockThreshold: 10,
-      status: 'active',
-      isLowStock: true,
-    },
-    {
-      _id: '3',
-      name: 'Dell Inspiron 15',
-      sku: 'ELEC-103',
-      description: 'Dell Inspiron 15 - Electronics',
-      category: { _id: 'c1', name: 'Electronics' },
-      supplier: { _id: 's1', name: 'Cairo Tech Distributors' },
-      price: 520.0,
-      quantity: 15,
-      lowStockThreshold: 5,
-      status: 'active',
-      isLowStock: false,
-    },
-    {
-      _id: '4',
-      name: 'Sony WH-1000XM4',
-      sku: 'ELEC-104',
-      description: 'Sony WH-1000XM4 - Electronics',
-      category: { _id: 'c1', name: 'Electronics' },
-      supplier: { _id: 's1', name: 'Cairo Tech Distributors' },
-      price: 279.0,
-      quantity: 3,
-      lowStockThreshold: 5,
-      status: 'active',
-      isLowStock: true,
-    },
-    {
-      _id: '5',
-      name: 'A4 Notebook',
-      sku: 'OFF-101',
-      description: 'A4 Notebook - Office Supplies',
-      category: { _id: 'c2', name: 'Office Supplies' },
-      supplier: { _id: 's2', name: 'Delta Office Supplies Co.' },
-      price: 3.25,
-      quantity: 200,
-      lowStockThreshold: 30,
-      status: 'active',
-      isLowStock: false,
-    },
-    {
-      _id: '6',
-      name: 'Office Chair',
-      sku: 'FUR-101',
-      description: 'Office Chair - Furniture',
-      category: { _id: 'c3', name: 'Furniture' },
-      supplier: { _id: 's3', name: 'Alexandria Furniture Works' },
-      price: 149.99,
-      quantity: 2,
-      lowStockThreshold: 5,
-      status: 'inactive',
-      isLowStock: true,
-    },
-  ];
-
-  categoriesData: Category[] = [
-    {
-      _id: 'c1',
-      name: 'Electronics',
-      description: 'Phones, laptops, headphones, and accessories.',
-      status: 'active',
-    },
-    {
-      _id: 'c2',
-      name: 'Office Supplies',
-      description: 'Daily workspace materials and stationery.',
-      status: 'active',
-    },
-    {
-      _id: 'c3',
-      name: 'Furniture',
-      description: 'Desks, chairs, shelves, and fixtures.',
-      status: 'inactive',
-    },
-  ];
+  products: Product[] = [];
+  categoriesData: Category[] = [];
+  suppliersData: Supplier[] = [];
+  isLoading = false;
+  errorMessage = '';
 
   viewMode: 'products' | 'categories' = 'products';
   searchTerm = '';
@@ -153,6 +59,70 @@ export class ProductsList {
     description: ['', [Validators.required, Validators.minLength(8)]],
     status: ['active' as 'active' | 'inactive', Validators.required],
   });
+
+
+  ngOnInit(): void {
+    this.loadInventoryData();
+  }
+
+  private loadInventoryData(): void {
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    forkJoin({
+      products: this.productService.getProducts(),
+      categories: this.categoryService.getCategories(),
+      suppliers: this.supplierService.getSuppliers(),
+    }).subscribe({
+      next: ({ products, categories, suppliers }) => {
+        this.products = products;
+        this.categoriesData = categories.map((category) => this.normalizeCategory(category));
+        this.suppliersData = suppliers;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.errorMessage = error.error?.message ?? 'Unable to load inventory data.';
+        this.isLoading = false;
+      },
+    });
+  }
+
+  private normalizeCategory(category: Category): Category {
+    return {
+      ...category,
+      status: category.isActive === false ? 'inactive' : 'active',
+    };
+  }
+
+  private toCategoryPayload(category: Category) {
+    return {
+      name: category.name,
+      description: category.description,
+      isActive: category.status === 'active',
+    };
+  }
+
+  private toProductPayload(value: ReturnType<typeof this.productForm.getRawValue>): ProductPayload | null {
+    const category = this.categoriesData.find((c) => c.name === value.categoryName);
+    const supplier = this.suppliersData.find((s) => s.name === value.supplierName);
+
+    if (!category || !supplier) {
+      alert('Please select an existing category and supplier before saving.');
+      return null;
+    }
+
+    return {
+      name: value.name.trim(),
+      sku: value.sku.trim().toUpperCase(),
+      description: value.description.trim(),
+      category: category._id,
+      supplier: supplier._id,
+      price: value.price,
+      quantity: value.quantity,
+      lowStockThreshold: value.lowStockThreshold,
+      status: value.status,
+    };
+  }
 
   get categories(): string[] {
     return Array.from(new Set(this.categoriesData.map((c) => c.name)));
@@ -285,41 +255,34 @@ export class ProductsList {
       this.productForm.markAllAsTouched();
       return;
     }
+
     const value = this.productForm.getRawValue();
-    const category = this.categoriesData.find((c) => c.name === value.categoryName) ?? {
-      _id: `c-${Date.now()}`,
-      name: value.categoryName,
-      description: 'Created from product form.',
-      status: 'active' as const,
-    };
-    if (!this.categoriesData.some((c) => c.name === value.categoryName))
-      this.categoriesData.push(category);
-    const product: Product = {
-      _id: value._id || String(Date.now()),
-      name: value.name.trim(),
-      sku: value.sku.trim().toUpperCase(),
-      description: value.description.trim(),
-      category: { _id: category._id, name: category.name },
-      supplier: {
-        _id: `s-${value.supplierName.toLowerCase().replace(/\s+/g, '-')}`,
-        name: value.supplierName.trim(),
+    const payload = this.toProductPayload(value);
+    if (!payload) return;
+
+    const request = this.isEditing && value._id
+      ? this.productService.updateProduct(value._id, payload)
+      : this.productService.createProduct(payload);
+
+    request.subscribe({
+      next: () => {
+        this.loadInventoryData();
+        this.showForm = false;
       },
-      price: value.price,
-      quantity: value.quantity,
-      lowStockThreshold: value.lowStockThreshold,
-      status: value.status,
-      isLowStock: value.quantity <= value.lowStockThreshold,
-    };
-    if (this.isEditing)
-      this.products = this.products.map((p) => (p._id === product._id ? product : p));
-    else this.products = [...this.products, product];
-    this.showForm = false;
+      error: (error) => alert(error.error?.message ?? 'Unable to save product.'),
+    });
   }
 
   deleteProduct(product: Product) {
     if (!confirm(`Delete "${product.name}"? This cannot be undone.`)) return;
-    this.products = this.products.filter((p) => p._id !== product._id);
-    if (this.currentPage > this.totalPages) this.currentPage = this.totalPages;
+
+    this.productService.deleteProduct(product._id).subscribe({
+      next: () => {
+        this.products = this.products.filter((p) => p._id !== product._id);
+        if (this.currentPage > this.totalPages) this.currentPage = this.totalPages;
+      },
+      error: (error) => alert(error.error?.message ?? 'Unable to delete product.'),
+    });
   }
 
   openAddCategoryForm() {
@@ -343,26 +306,25 @@ export class ProductsList {
       this.categoryForm.markAllAsTouched();
       return;
     }
+
     const value = this.categoryForm.getRawValue();
     const category: Category = {
       ...value,
-      _id: value._id || `c-${Date.now()}`,
       name: value.name.trim(),
       description: value.description.trim(),
     };
-    if (this.isEditingCategory) {
-      const oldName = this.categoriesData.find((c) => c._id === category._id)?.name;
-      this.categoriesData = this.categoriesData.map((c) => (c._id === category._id ? category : c));
-      if (oldName)
-        this.products = this.products.map((p) =>
-          p.category.name === oldName
-            ? { ...p, category: { _id: category._id, name: category.name } }
-            : p,
-        );
-    } else {
-      this.categoriesData = [...this.categoriesData, category];
-    }
-    this.showCategoryForm = false;
+    const payload = this.toCategoryPayload(category);
+    const request = this.isEditingCategory && value._id
+      ? this.categoryService.updateCategory(value._id, payload)
+      : this.categoryService.createCategory(payload);
+
+    request.subscribe({
+      next: () => {
+        this.loadInventoryData();
+        this.showCategoryForm = false;
+      },
+      error: (error) => alert(error.error?.message ?? 'Unable to save category.'),
+    });
   }
 
   deleteCategory(category: Category) {
@@ -371,7 +333,11 @@ export class ProductsList {
       return;
     }
     if (!confirm(`Delete "${category.name}" category?`)) return;
-    this.categoriesData = this.categoriesData.filter((c) => c._id !== category._id);
+
+    this.categoryService.deleteCategory(category._id).subscribe({
+      next: () => (this.categoriesData = this.categoriesData.filter((c) => c._id !== category._id)),
+      error: (error) => alert(error.error?.message ?? 'Unable to delete category.'),
+    });
   }
 
   onSidebarTabSelected(tab: string) {
