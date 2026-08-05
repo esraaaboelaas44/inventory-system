@@ -1,1 +1,54 @@
-/* Component-specific styles go here if Tailwind utility classes aren't enough */
+:host {
+  display: block;
+}
+.modal-card {
+  animation: modal-in 180ms ease-out;
+}
+.form-field {
+  color: #11194d;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.875rem;
+  font-weight: 700;
+  gap: 0.35rem;
+}
+.form-field input,
+.form-field select {
+  background: #f8fafc;
+  border: 1px solid #d1d5db;
+  border-radius: 0.75rem;
+  color: #111827;
+  font-weight: 500;
+  outline: none;
+  padding: 0.65rem 0.9rem;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+.form-field input:focus,
+.form-field select:focus {
+  background: #fff;
+  border-color: #4338ca;
+  box-shadow: 0 0 0 4px rgba(67, 56, 202, 0.14);
+  transform: translateY(-1px);
+}
+.form-field input.invalid,
+.form-field select.invalid {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+}
+.form-field small {
+  color: #dc2626;
+  font-weight: 600;
+}
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
