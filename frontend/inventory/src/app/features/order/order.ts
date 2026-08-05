@@ -5,10 +5,12 @@ import { Sidebar } from '../../shared/components/sidebar/sidebar';
 import { iSupplier } from '../../models/iSupplier';
 import { SupplierService } from '../../../services/supplier.service';
 import { OrderService } from '../../../services/order.service';
+import { DetailedOrder } from './detailed-order/detailed-order';
+
 @Component({
   selector: 'app-order',
   standalone: true,
-  imports: [CommonModule, Sidebar],
+  imports: [CommonModule, Sidebar, DetailedOrder],
   templateUrl: './order.html',
   styleUrl: './order.css',
 })
@@ -53,6 +55,8 @@ export class Order {
   showModal = false;
 
   viewOrder(order: iOrder): void {
+    // full order kept for the table row actions (e.g. cancelOrder), but the
+    // detail modal only needs the id — it fetches its own data via OrderService
     this.selectedOrder = order;
     this.showModal = true;
   }
@@ -81,6 +85,4 @@ export class Order {
     alert(`Order ${order.orderNumber} has been cancelled successfully.`);
     this.closeModal();
   }
-
-  //get supplier id
 }
