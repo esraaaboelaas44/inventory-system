@@ -34,6 +34,16 @@
         </button>
       </div>
     </div>
+    @if (errorMessage) {
+      <div class="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        {{ errorMessage }}
+      </div>
+    }
+    @if (isLoading) {
+      <div class="mb-4 rounded-lg border border-indigo-100 bg-indigo-50 px-4 py-3 text-sm text-indigo-700">
+        Loading inventory data from MongoDB...
+      </div>
+    }
     @if (viewMode === 'products') {
       <section>
         <div
@@ -292,11 +302,15 @@
               >Description must be at least 8 characters.</small
             ></label
           ><label class="form-field"
-            >Supplier<input
+            >Supplier<select
               formControlName="supplierName"
-              type="text"
               [class.invalid]="isInvalid('supplierName')"
-            /><small *ngIf="isInvalid('supplierName')">Supplier is required.</small></label
+            >
+              <option value="">Select supplier</option>
+              @for (supplier of suppliersData; track supplier._id) {
+                <option [value]="supplier.name">{{ supplier.name }}</option>
+              }</select
+            ><small *ngIf="isInvalid('supplierName')">Supplier is required.</small></label
           ><label class="form-field"
             >Status<select formControlName="status">
               <option value="active">Active</option>

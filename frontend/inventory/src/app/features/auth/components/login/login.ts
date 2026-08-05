@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -9,15 +11,17 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './login.css',
 })
 export class Login {
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+
   username = '';
   password = '';
   rememberMe = false;
 
   login(): void {
-    console.log({
-      username: this.username,
-      password: this.password,
-      rememberMe: this.rememberMe,
+    this.authService.login(this.username, this.password).subscribe({
+      next: () => this.router.navigate(['/products']),
+      error: (error) => alert(error.error?.message ?? 'Unable to sign in. Please try again.'),
     });
   }
 }
