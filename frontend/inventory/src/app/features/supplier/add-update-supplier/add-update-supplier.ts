@@ -15,6 +15,9 @@ export class AddUpdateSupplier {
   constructor(private SupplierService: SupplierService) {}
 
   newSupplier: iSupplier = {
+    __v: 0,
+    isActive: true,
+    _id: '',
     name: '',
     industry: '',
     email: '',

@@ -13,16 +13,21 @@ import { SupplierCard } from './supplier-card/supplier-card';
 })
 export class GetSupplier {
   SUPPLIERS: iSupplier[] = [];
-  constructor(private SupplierService: SupplierService) {
+  constructor(
+    private SupplierService: SupplierService,
+    private cdr: ChangeDetectorRef,
+  ) {
     this.SupplierService.getSuppliers().subscribe({
       next: (res: any) => {
-        this.SUPPLIERS = res;
+        this.SUPPLIERS = res.data;
+        this.cdr.detectChanges();
         console.log('Suppliers loaded:', this.SUPPLIERS);
       },
       error: (err: any) => {
         console.error(err);
       },
     });
+    console.log(this.SUPPLIERS);
   }
   // getSuppliers() {
   //   this.SupplierService.getSuppliers().subscribe({

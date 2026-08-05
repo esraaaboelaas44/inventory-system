@@ -11,10 +11,6 @@ export class SupplierService {
   SUPPLIERS: iSupplier[] = [];
 
   getSuppliers(): any {
-    if (this.SUPPLIERS.length > 0) {
-      return of(this.SUPPLIERS);
-    }
-
     return this.http.get<iSupplierRes>('http://localhost:5000/api/suppliers/').pipe(
       tap((res) => {
         this.SUPPLIERS = res.data;
