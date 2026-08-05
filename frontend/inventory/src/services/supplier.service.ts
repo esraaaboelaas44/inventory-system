@@ -14,7 +14,6 @@ export class SupplierService {
     if (this.SUPPLIERS.length > 0) {
       return of(this.SUPPLIERS);
     }
-    //kk
 
     return this.http.get<iSupplierRes>('http://localhost:5000/api/suppliers/').pipe(
       tap((res) => {
@@ -24,6 +23,6 @@ export class SupplierService {
   }
 
   addSupplier(data: iSupplier): any {
-    return this.http.post('http://localhost:5000/api/suppliers/', data);
+    return this.http.post('http://localhost:5000/api/suppliers', data);
   }
 }
