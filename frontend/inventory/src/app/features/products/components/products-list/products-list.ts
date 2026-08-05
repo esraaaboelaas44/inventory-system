@@ -8,6 +8,7 @@ import { Supplier } from '../../../../models/supplier';
 import { CategoryService } from '../../../../core/services/category.service';
 import { ProductPayload, ProductService } from '../../../../core/services/product.service';
 import { SupplierService } from '../../../../core/services/supplier.service';
+import { AuthService } from '../../../../core/services/auth.service';
 import { Sidebar } from '../../../../shared/components/sidebar/sidebar';
 
 @Component({
@@ -22,12 +23,19 @@ export class ProductsList implements OnInit {
   private readonly productService = inject(ProductService);
   private readonly categoryService = inject(CategoryService);
   private readonly supplierService = inject(SupplierService);
+  private readonly authService = inject(AuthService);
 
   products: Product[] = [];
   categoriesData: Category[] = [];
   suppliersData: Supplier[] = [];
   isLoading = false;
   errorMessage = '';
+  toastMessage = '';
+  toastType: 'success' | 'info' | 'error' = 'info';
+  pendingActionId = '';
+  pendingActionType: 'product-delete' | 'category-delete' | 'product-save' | 'category-save' | '' =
+    '';
+  deleteConfirmation: { type: 'product' | 'category'; id: string; name: string } | null = null;
 
   viewMode: 'products' | 'categories' = 'products';
   searchTerm = '';
@@ -60,6 +68,17 @@ export class ProductsList implements OnInit {
     status: ['active' as 'active' | 'inactive', Validators.required],
   });
 
+  get currentRole(): string {
+    return this.authService.getCurrentUser()?.role?.toLowerCase() ?? 'staff';
+  }
+
+  get canEditInventory(): boolean {
+    return this.currentRole === 'admin' || this.currentRole === 'manager';
+  }
+
+  get canDeleteInventory(): boolean {
+    return this.currentRole === 'admin';
+  }
 
   ngOnInit(): void {
     this.loadInventoryData();
@@ -102,12 +121,14 @@ export class ProductsList implements OnInit {
     };
   }
 
-  private toProductPayload(value: ReturnType<typeof this.productForm.getRawValue>): ProductPayload | null {
+  private toProductPayload(
+    value: ReturnType<typeof this.productForm.getRawValue>,
+  ): ProductPayload | null {
     const category = this.categoriesData.find((c) => c.name === value.categoryName);
     const supplier = this.suppliersData.find((s) => s.name === value.supplierName);
 
     if (!category || !supplier) {
-      alert('Please select an existing category and supplier before saving.');
+      this.showToast('Please select an existing category and supplier before saving.', 'error');
       return null;
     }
 
@@ -213,6 +234,10 @@ export class ProductsList implements OnInit {
   }
 
   openAddForm() {
+    if (!this.canEditInventory) {
+      this.showToast('Your role can view products, but cannot add them.', 'error');
+      return;
+    }
     this.productForm.reset({
       _id: '',
       name: '',
@@ -230,6 +255,10 @@ export class ProductsList implements OnInit {
   }
 
   openEditForm(product: Product) {
+    if (!this.canEditInventory) {
+      this.showToast('Your role can view products, but cannot edit them.', 'error');
+      return;
+    }
     this.productForm.reset({
       _id: product._id,
       name: product.name,
@@ -251,6 +280,10 @@ export class ProductsList implements OnInit {
   }
 
   saveProduct() {
+    if (!this.canEditInventory) {
+      this.showToast('Your role can view products, but cannot add or edit them.', 'error');
+      return;
+    }
     if (this.productForm.invalid) {
       this.productForm.markAllAsTouched();
       return;
@@ -260,38 +293,83 @@ export class ProductsList implements OnInit {
     const payload = this.toProductPayload(value);
     if (!payload) return;
 
-    const request = this.isEditing && value._id
-      ? this.productService.updateProduct(value._id, payload)
-      : this.productService.createProduct(payload);
+    const request =
+      this.isEditing && value._id
+        ? this.productService.updateProduct(value._id, payload)
+        : this.productService.createProduct(payload);
+
+    this.pendingActionType = 'product-save';
+    this.pendingActionId = value._id || 'new-product';
+    this.showToast(
+      this.isEditing ? `Saving changes to ${value.name}...` : `Adding ${value.name}...`,
+      'info',
+    );
 
     request.subscribe({
       next: () => {
         this.loadInventoryData();
         this.showForm = false;
+        this.clearPendingAction();
+        this.showToast(
+          this.isEditing ? 'Product updated successfully.' : 'Product added successfully.',
+          'success',
+        );
       },
-      error: (error) => alert(error.error?.message ?? 'Unable to save product.'),
+      error: (error) => {
+        this.clearPendingAction();
+        this.showToast(error.error?.message ?? 'Unable to save product.', 'error');
+      },
     });
   }
 
+  requestDeleteProduct(product: Product) {
+    if (!this.canDeleteInventory) {
+      this.showToast('Only admins can delete products.', 'error');
+      return;
+    }
+    this.deleteConfirmation = { type: 'product', id: product._id, name: product.name };
+    this.showToast(`Review the delete confirmation for ${product.name}.`, 'info');
+  }
+
   deleteProduct(product: Product) {
-    if (!confirm(`Delete "${product.name}"? This cannot be undone.`)) return;
+    if (!this.canDeleteInventory) {
+      this.showToast('Only admins can delete products.', 'error');
+      return;
+    }
+    this.pendingActionType = 'product-delete';
+    this.pendingActionId = product._id;
+    this.showToast(`Deleting ${product.name}...`, 'info');
 
     this.productService.deleteProduct(product._id).subscribe({
       next: () => {
         this.products = this.products.filter((p) => p._id !== product._id);
         if (this.currentPage > this.totalPages) this.currentPage = this.totalPages;
+        this.deleteConfirmation = null;
+        this.clearPendingAction();
+        this.showToast('Product deleted successfully.', 'success');
       },
-      error: (error) => alert(error.error?.message ?? 'Unable to delete product.'),
+      error: (error) => {
+        this.clearPendingAction();
+        this.showToast(error.error?.message ?? 'Unable to delete product.', 'error');
+      },
     });
   }
 
   openAddCategoryForm() {
+    if (!this.canEditInventory) {
+      this.showToast('Your role can view categories, but cannot add them.', 'error');
+      return;
+    }
     this.categoryForm.reset({ _id: '', name: '', description: '', status: 'active' });
     this.isEditingCategory = false;
     this.showCategoryForm = true;
   }
 
   openEditCategoryForm(category: Category) {
+    if (!this.canEditInventory) {
+      this.showToast('Your role can view categories, but cannot edit them.', 'error');
+      return;
+    }
     this.categoryForm.reset(category);
     this.isEditingCategory = true;
     this.showCategoryForm = true;
@@ -302,6 +380,10 @@ export class ProductsList implements OnInit {
   }
 
   saveCategory() {
+    if (!this.canEditInventory) {
+      this.showToast('Your role can view categories, but cannot add or edit them.', 'error');
+      return;
+    }
     if (this.categoryForm.invalid) {
       this.categoryForm.markAllAsTouched();
       return;
@@ -314,30 +396,97 @@ export class ProductsList implements OnInit {
       description: value.description.trim(),
     };
     const payload = this.toCategoryPayload(category);
-    const request = this.isEditingCategory && value._id
-      ? this.categoryService.updateCategory(value._id, payload)
-      : this.categoryService.createCategory(payload);
+    const request =
+      this.isEditingCategory && value._id
+        ? this.categoryService.updateCategory(value._id, payload)
+        : this.categoryService.createCategory(payload);
+
+    this.pendingActionType = 'category-save';
+    this.pendingActionId = value._id || 'new-category';
+    this.showToast(
+      this.isEditingCategory ? `Saving changes to ${value.name}...` : `Adding ${value.name}...`,
+      'info',
+    );
 
     request.subscribe({
       next: () => {
         this.loadInventoryData();
         this.showCategoryForm = false;
+        this.clearPendingAction();
+        this.showToast(
+          this.isEditingCategory
+            ? 'Category updated successfully.'
+            : 'Category added successfully.',
+          'success',
+        );
       },
-      error: (error) => alert(error.error?.message ?? 'Unable to save category.'),
+      error: (error) => {
+        this.clearPendingAction();
+        this.showToast(error.error?.message ?? 'Unable to save category.', 'error');
+      },
     });
   }
 
-  deleteCategory(category: Category) {
-    if (this.productCount(category.name) > 0) {
-      alert('Move or delete products in this category first.');
+  requestDeleteCategory(category: Category) {
+    if (!this.canDeleteInventory) {
+      this.showToast('Only admins can delete categories.', 'error');
       return;
     }
-    if (!confirm(`Delete "${category.name}" category?`)) return;
+    if (this.productCount(category.name) > 0) {
+      this.showToast('Move or delete products in this category first.', 'error');
+      return;
+    }
+    this.deleteConfirmation = { type: 'category', id: category._id, name: category.name };
+    this.showToast(`Review the delete confirmation for ${category.name}.`, 'info');
+  }
+
+  deleteCategory(category: Category) {
+    if (!this.canDeleteInventory) {
+      this.showToast('Only admins can delete categories.', 'error');
+      return;
+    }
+    this.pendingActionType = 'category-delete';
+    this.pendingActionId = category._id;
+    this.showToast(`Deleting ${category.name}...`, 'info');
 
     this.categoryService.deleteCategory(category._id).subscribe({
-      next: () => (this.categoriesData = this.categoriesData.filter((c) => c._id !== category._id)),
-      error: (error) => alert(error.error?.message ?? 'Unable to delete category.'),
+      next: () => {
+        this.categoriesData = this.categoriesData.filter((c) => c._id !== category._id);
+        this.deleteConfirmation = null;
+        this.clearPendingAction();
+        this.showToast('Category deleted successfully.', 'success');
+      },
+      error: (error) => {
+        this.clearPendingAction();
+        this.showToast(error.error?.message ?? 'Unable to delete category.', 'error');
+      },
     });
+  }
+
+  confirmDelete() {
+    if (!this.deleteConfirmation) return;
+    if (this.deleteConfirmation.type === 'product') {
+      const product = this.products.find((p) => p._id === this.deleteConfirmation?.id);
+      if (product) this.deleteProduct(product);
+      return;
+    }
+    const category = this.categoriesData.find((c) => c._id === this.deleteConfirmation?.id);
+    if (category) this.deleteCategory(category);
+  }
+
+  cancelDelete() {
+    this.deleteConfirmation = null;
+    this.showToast('Delete cancelled.', 'info');
+  }
+
+  private showToast(message: string, type: 'success' | 'info' | 'error' = 'info') {
+    this.toastMessage = message;
+    this.toastType = type;
+  }
+
+  private clearPendingAction() {
+    this.pendingActionId = '';
+    this.pendingActionType = '';
   }
 
   onSidebarTabSelected(tab: string) {
