@@ -9,11 +9,17 @@ const stockSchema = new Schema(
     required: true
     ,trim: true
   },
-  category: 
+  sku:
   {
     type: String,
     required: true,
     trim: true,
+  },
+  category: 
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Category",
+    required: true,
   },
   action: 
   {type: String
