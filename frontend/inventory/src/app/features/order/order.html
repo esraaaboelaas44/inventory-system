@@ -74,15 +74,19 @@
 
                 <div>
                   <label for="supplier" class="block text-sm font-medium text-slate-700 mb-1">
-                    Supplier <span class="text-slate-400 font-normal">(ObjectId)</span>
+                    Supplier
                   </label>
-                  <input
-                    type="text"
-                    id="supplier"
-                    name="supplier"
-                    placeholder="Supplier document ID"
-                    class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900"
-                  />
+                  <select
+                    id="type"
+                    name="type"
+                    required
+                    class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900"
+                  >
+                    <option value="" disabled selected>Select Supplier</option>
+                    @for (supplier of SUPPLIERS; track supplier.name) {
+                      <option>{{ supplier.name }}</option>
+                    }
+                  </select>
                 </div>
               </div>
             </div>
