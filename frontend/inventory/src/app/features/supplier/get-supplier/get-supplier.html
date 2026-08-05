@@ -122,26 +122,20 @@
         font-weight: 500;
       }
 
-      .grid-2 {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1rem;
-      }
-
-      @media (min-width: 640px) {
-        .grid-2 {
-          grid-template-columns: 1fr 1fr;
-        }
-      }
-
-      .grid-3 {
+      .grid-suppliers {
         display: grid;
         grid-template-columns: 1fr;
         gap: 1.5rem;
       }
 
-      @media (min-width: 768px) {
-        .grid-3 {
+      @media (min-width: 640px) {
+        .grid-suppliers {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .grid-suppliers {
           grid-template-columns: 1fr 1fr 1fr;
         }
       }
@@ -205,29 +199,6 @@
         pointer-events: none;
       }
 
-      .stats-card {
-        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-        color: white;
-        border-radius: 0.75rem;
-        padding: 1.25rem 1.5rem;
-        border: 1px solid #334155;
-      }
-
-      .stats-number {
-        font-size: 2rem;
-        font-weight: 700;
-        line-height: 1;
-      }
-
-      .stats-label {
-        font-size: 0.75rem;
-        font-weight: 500;
-        color: #94a3b8;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin-top: 0.25rem;
-      }
-
       .empty-state {
         text-align: center;
         padding: 3rem 1.5rem;
@@ -279,7 +250,7 @@
         <div class="flex items-center justify-between flex-wrap gap-4 mb-6">
           <h1 class="page-title">All Suppliers</h1>
           <button
-            class="btn-save inline-flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition text-sm font-semibold"
+            class="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition text-sm font-semibold"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -291,28 +262,6 @@
             </svg>
             Add Supplier
           </button>
-        </div>
-
-        <!-- Stats -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-          <div class="stats-card">
-            <div class="stats-number" id="totalSuppliers">3</div>
-            <div class="stats-label">Total Suppliers</div>
-          </div>
-          <div
-            class="stats-card"
-            style="background: linear-gradient(135deg, #065f46 0%, #047857 100%)"
-          >
-            <div class="stats-number" id="activeSuppliers">2</div>
-            <div class="stats-label">Active Suppliers</div>
-          </div>
-          <div
-            class="stats-card"
-            style="background: linear-gradient(135deg, #991b1b 0%, #dc2626 100%)"
-          >
-            <div class="stats-number" id="inactiveSuppliers">1</div>
-            <div class="stats-label">Inactive Suppliers</div>
-          </div>
         </div>
 
         <!-- Filters and Search -->
@@ -348,151 +297,11 @@
         </div>
 
         <!-- Supplier Grid -->
-        <div class="grid-3" id="supplierGrid">
-          <!-- Supplier 1 - Active -->
-          <div class="card supplier-card active" data-status="active">
-            <div class="flex items-start justify-between mb-3">
-              <div>
-                <h3 class="text-lg font-semibold text-slate-900">TechSupply Inc.</h3>
-                <p class="text-sm text-slate-500">Technology</p>
-              </div>
-              <span class="status-badge active">
-                <span class="dot"></span>
-                Active
-              </span>
-            </div>
-
-            <div class="space-y-3">
-              <div>
-                <div class="info-label">Contact Person</div>
-                <div class="info-value">Sarah Johnson</div>
-                <div class="text-sm text-slate-500">sarah.j@techsupply.com</div>
-                <div class="text-sm text-slate-500">+1 (555) 123-4567</div>
-              </div>
-
-              <div>
-                <div class="info-label">Company Contact</div>
-                <div class="info-value">info@techsupply.com</div>
-                <div class="text-sm text-slate-500">+1 (555) 987-6543</div>
-              </div>
-
-              <div>
-                <div class="info-label">Address</div>
-                <div class="text-sm text-slate-700">
-                  123 Tech Park Drive, Suite 200, San Francisco, CA 94105
-                </div>
-              </div>
-            </div>
-
-            <div class="mt-4 pt-4 border-t border-slate-100 flex gap-2 justify-end">
-              <button
-                class="text-sm text-slate-600 hover:text-slate-900 font-medium px-3 py-1 rounded hover:bg-slate-100 transition"
-              >
-                Edit
-              </button>
-              <button
-                class="text-sm text-rose-600 hover:text-rose-700 font-medium px-3 py-1 rounded hover:bg-rose-50 transition"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-
-          <!-- Supplier 2 - Active -->
-          <div class="card supplier-card active" data-status="active">
-            <div class="flex items-start justify-between mb-3">
-              <div>
-                <h3 class="text-lg font-semibold text-slate-900">Global Manufacturing Co.</h3>
-                <p class="text-sm text-slate-500">Manufacturing</p>
-              </div>
-              <span class="status-badge active">
-                <span class="dot"></span>
-                Active
-              </span>
-            </div>
-
-            <div class="space-y-3">
-              <div>
-                <div class="info-label">Contact Person</div>
-                <div class="info-value">Michael Chen</div>
-                <div class="text-sm text-slate-500">m.chen@globalmfg.com</div>
-                <div class="text-sm text-slate-500">+1 (555) 234-5678</div>
-              </div>
-
-              <div>
-                <div class="info-label">Company Contact</div>
-                <div class="info-value">info@globalmfg.com</div>
-                <div class="text-sm text-slate-500">+1 (555) 876-5432</div>
-              </div>
-
-              <div>
-                <div class="info-label">Address</div>
-                <div class="text-sm text-slate-700">456 Industrial Blvd, Detroit, MI 48201</div>
-              </div>
-            </div>
-
-            <div class="mt-4 pt-4 border-t border-slate-100 flex gap-2 justify-end">
-              <button
-                class="text-sm text-slate-600 hover:text-slate-900 font-medium px-3 py-1 rounded hover:bg-slate-100 transition"
-              >
-                Edit
-              </button>
-              <button
-                class="text-sm text-rose-600 hover:text-rose-700 font-medium px-3 py-1 rounded hover:bg-rose-50 transition"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-
-          <!-- Supplier 3 - Inactive -->
-          <div class="card supplier-card inactive" data-status="inactive">
-            <div class="flex items-start justify-between mb-3">
-              <div>
-                <h3 class="text-lg font-semibold text-slate-900">Retail Solutions LLC</h3>
-                <p class="text-sm text-slate-500">Retail</p>
-              </div>
-              <span class="status-badge inactive">
-                <span class="dot"></span>
-                Inactive
-              </span>
-            </div>
-
-            <div class="space-y-3">
-              <div>
-                <div class="info-label">Contact Person</div>
-                <div class="info-value">Emily Rodriguez</div>
-                <div class="text-sm text-slate-500">e.rodriguez@retailsolutions.com</div>
-                <div class="text-sm text-slate-500">+1 (555) 345-6789</div>
-              </div>
-
-              <div>
-                <div class="info-label">Company Contact</div>
-                <div class="info-value">info@retailsolutions.com</div>
-                <div class="text-sm text-slate-500">+1 (555) 765-4321</div>
-              </div>
-
-              <div>
-                <div class="info-label">Address</div>
-                <div class="text-sm text-slate-700">789 Commerce Avenue, New York, NY 10001</div>
-              </div>
-            </div>
-
-            <div class="mt-4 pt-4 border-t border-slate-100 flex gap-2 justify-end">
-              <button
-                class="text-sm text-slate-600 hover:text-slate-900 font-medium px-3 py-1 rounded hover:bg-slate-100 transition"
-              >
-                Edit
-              </button>
-              <button
-                class="text-sm text-rose-600 hover:text-rose-700 font-medium px-3 py-1 rounded hover:bg-rose-50 transition"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
+        <div class="grid-suppliers" id="supplierGrid">
+          @for (supplier1 of SUPPLIERS; track supplier1.name) {
+            <app-supplier-card [supplier]="supplier1" />
+          }
         </div>
-
         <!-- Empty State (hidden by default) -->
         <div class="card empty-state hidden" id="emptyState">
           <svg class="mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -516,17 +325,6 @@
       const searchInput = document.getElementById('searchInput');
       const emptyState = document.getElementById('emptyState');
       const supplierGrid = document.getElementById('supplierGrid');
-
-      // Update stats
-      function updateStats() {
-        const total = supplierCards.length;
-        const active = document.querySelectorAll('.supplier-card.active').length;
-        const inactive = document.querySelectorAll('.supplier-card.inactive').length;
-
-        document.getElementById('totalSuppliers').textContent = total;
-        document.getElementById('activeSuppliers').textContent = active;
-        document.getElementById('inactiveSuppliers').textContent = inactive;
-      }
 
       // Filter suppliers
       function filterSuppliers() {
@@ -564,8 +362,6 @@
           emptyState.classList.add('hidden');
           supplierGrid.classList.remove('hidden');
         }
-
-        updateStats();
       }
 
       // Filter button clicks
@@ -581,13 +377,15 @@
       searchInput.addEventListener('input', filterSuppliers);
 
       // Initialize
-      updateStats();
+      filterSuppliers();
 
       // Add Supplier button click handler
-      document.querySelector('.btn-save')?.addEventListener('click', function () {
-        alert('Navigate to Add Supplier page');
-        // In a real app: router.navigate(['/suppliers/add'])
-      });
+      document
+        .querySelector('.inline-flex.items-center.gap-2.px-4.py-2.bg-slate-900')
+        ?.addEventListener('click', function () {
+          alert('Navigate to Add Supplier page');
+          // In a real app: router.navigate(['/suppliers/add'])
+        });
 
       // Edit button handlers
       document.querySelectorAll('.supplier-card .text-slate-600').forEach((btn) => {
@@ -606,7 +404,7 @@
           if (confirm(`Are you sure you want to delete supplier: ${supplierName}?`)) {
             alert(`Supplier "${supplierName}" deleted`);
             this.closest('.supplier-card').remove();
-            updateStats();
+            filterSuppliers();
           }
         });
       });
