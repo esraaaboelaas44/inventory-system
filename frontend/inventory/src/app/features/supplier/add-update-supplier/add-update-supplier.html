@@ -223,19 +223,31 @@
         <p class="text-xs font-semibold tracking-widest text-slate-400 uppercase mb-1">
           Suppliers / Add / Edit
         </p>
-        <h1 class="page-title">Add / Edit Supplier</h1>
+        <h1 class="page-title">Add Supplier</h1>
 
-        <form class="card" novalidate>
+        <form class="card" novalidate (ngSubmit)="addSupplier()" #newSupplierForm="ngForm">
           <!-- === COMPANY INFO === -->
           <h2 class="section-title">Company Information</h2>
           <div class="grid-2">
             <div class="field">
               <label for="companyName">Company Name <span class="text-rose-500">*</span></label>
-              <input type="text" id="companyName" placeholder="Acme Corp" />
+              <input
+                type="text"
+                id="companyName"
+                placeholder="Acme Corp"
+                [(ngModel)]="newSupplier.name"
+                #name="ngModel"
+                name="name"
+              />
             </div>
             <div class="field">
               <label for="industry">Industry</label>
-              <select id="industry">
+              <select
+                id="industry"
+                [(ngModel)]="newSupplier.industry"
+                #industry="ngModel"
+                name="industry"
+              >
                 <option value="" disabled selected>Select industry</option>
                 <option value="Technology">Technology</option>
                 <option value="Manufacturing">Manufacturing</option>
@@ -247,15 +259,35 @@
             </div>
             <div class="field">
               <label for="email">Email</label>
-              <input type="email" id="email" placeholder="supplier@company.com" />
+              <input
+                type="email"
+                id="email"
+                [(ngModel)]="newSupplier.email"
+                #email="ngModel"
+                name="email"
+                placeholder="supplier@company.com"
+              />
             </div>
             <div class="field">
               <label for="phone">Phone</label>
-              <input type="tel" id="phone" placeholder="+1 (000) 000-0000" />
+              <input
+                type="tel"
+                id="phone"
+                [(ngModel)]="newSupplier.phone"
+                #phone="ngModel"
+                name="phone"
+                placeholder="+1 (000) 000-0000"
+              />
             </div>
             <div class="field" style="grid-column: 1 / -1">
               <label for="address">Address</label>
-              <textarea id="address" placeholder="Street, city, state, zip"></textarea>
+              <textarea
+                id="address"
+                [(ngModel)]="newSupplier.address"
+                #address="ngModel"
+                name="address"
+                placeholder="Street, city, state, zip"
+              ></textarea>
             </div>
           </div>
 
@@ -267,15 +299,36 @@
             <div class="grid-2">
               <div class="field">
                 <label for="contactName">Full Name</label>
-                <input type="text" id="contactName" placeholder="Jane Doe" />
+                <input
+                  type="text"
+                  id="contactName"
+                  [(ngModel)]="newSupplier.contactPerson.name"
+                  name="contactPerson.name"
+                  #contactName="ngModel"
+                  placeholder="Jane Doe"
+                />
               </div>
               <div class="field">
                 <label for="contactEmail">Email</label>
-                <input type="email" id="contactEmail" placeholder="jane.doe@example.com" />
+                <input
+                  type="email"
+                  id="contactEmail"
+                  [(ngModel)]="newSupplier.contactPerson.email"
+                  name="contactPerson.email"
+                  #contactEmail="ngModel"
+                  placeholder="jane.doe@example.com"
+                />
               </div>
               <div class="field">
                 <label for="contactPhone">Phone</label>
-                <input type="tel" id="contactPhone" placeholder="+1 (000) 000-0000" />
+                <input
+                  type="tel"
+                  id="contactPhone"
+                  [(ngModel)]="newSupplier.contactPerson.phone"
+                  name="contactPerson.phone"
+                  #contactPhone="ngModel"
+                  placeholder="+1 (000) 000-0000"
+                />
               </div>
               <!-- extra empty cell for layout balance (optional) -->
               <div></div>
