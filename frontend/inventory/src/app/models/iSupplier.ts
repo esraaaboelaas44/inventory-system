@@ -1,4 +1,5 @@
 export interface iSupplier {
+  _id: String;
   name: String;
   email: String;
   phone: String;
@@ -9,4 +10,6 @@ export interface iSupplier {
     phone: String;
   };
   industry: String;
+  isActive: boolean;
+  __v: number;
 }

@@ -1,4 +1,7 @@
 export interface iOrder {
+  _id: String;
+  createdAt: String;
+  updatedAt: String;
   orderNumber: String;
   type: 'BUY' | 'SELL';
   supplier: String;
