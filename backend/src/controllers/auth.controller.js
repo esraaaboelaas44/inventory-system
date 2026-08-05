@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const generateToken = require('../utils/generateToken');
 const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
+const AuthLog = require("../models/authLog.model");
 
 // @route POST /api/auth/login
 const login = async (req, res) => {
@@ -32,12 +33,17 @@ const login = async (req, res) => {
         });
       }
 
-    const token = generateToken(user._id);
+      const token = generateToken(user._id);
+      await AuthLog.create({
+      user: user._id,
+      action: "LOGIN",
+      });
      return res.status(200).json({
       success: true,
       data: { id: user._id, name: user.name, email: user.email, role: user.role },
-      token,
-    });
+       token,
+     });
+    
     } catch (error) {
 
         return res.status(500).json({
@@ -51,7 +57,11 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
     try {  
-    res.status(200).json({ success: true, message: 'Logged out successfully' });
+      await AuthLog.create({
+      user: req.user._id,
+      action: "LOGOUT",
+      });
+      res.status(200).json({ success: true, message: 'Logged out successfully' });
   } catch (error) {
 
       return res.status(500).json({
