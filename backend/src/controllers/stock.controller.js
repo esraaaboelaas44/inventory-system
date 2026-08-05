@@ -6,12 +6,13 @@ const productModel  = require("../models/product.model");
 const getStock = (req, res) => {
 
   stockModel
-  .find()
+  .find().populate("category", "name")
   .then((stocks) => {
 
     const result = stocks.map((stock) => ({
       product: stock.Name,
-      category: stock.category,
+      sku:stock.sku,
+      category: stock.category?.name,
       action: stock.action,
       oldquantity: stock.quantity,
       newquantity: stock.newquantity, 
@@ -33,12 +34,13 @@ const getStockId = (req, res) => {
 
   const id = req.params.id;
   stockModel
-  .findById(id)
+  .findById(id).populate("category", "name")
   .then((stock) => {
     const result = 
     { 
       product: stock.Name,
-      category: stock.category,
+      sku:stock.sku,
+      category: stock.category?.name,
       action: stock.action,
       oldquantity: stock.quantity,
       newquantity: stock.newquantity,
@@ -57,12 +59,13 @@ const getStockId = (req, res) => {
 
 const getLowStockProducts = (req, res) => {
 
-  productModel.find({quantity: { $lte: 10 }})
+  productModel.find({quantity: { $lte: 10 }}).populate("category", "name")
   .then((stocks) => 
   {
     const result = stocks.map((stock) => ({
       product: stock.name,
-      category: stock.category,
+      sku:stock.sku,
+      category: stock.category?.name,
       quantity: stock.quantity,
       date:new Date(stock.createdAt).toLocaleString("en-US", {year: "numeric",month: "2-digit",day: "2-digit",hour: "2-digit",minute: "2-digit",second: "2-digit",hour12: true})
     }));
@@ -78,12 +81,13 @@ const getLowStockProducts = (req, res) => {
 
 const getAdd = (req, res) => {
 
-  stockModel.find({action: "Add" })
+  stockModel.find({action: "Add" }).populate("category", "name")
   .then((stocks) => 
   {
     const result = stocks.map((stock) => ({
       product: stock.Name,
-      category: stock.category,
+      sku:stock.sku,
+      category: stock.category?.name,
       action: stock.action,
       oldquantity: stock.quantity,
       newquantity: stock.newquantity,
@@ -103,12 +107,13 @@ const getAdd = (req, res) => {
 
 const getUpdate = (req, res) => {
 
-  stockModel.find({ action: "Update"})
+  stockModel.find({ action: "Update"}).populate("category", "name")
   .then((stocks) => 
   {
     const result = stocks.map((stock) => ({
       product: stock.Name,
-      category: stock.category,
+      sku:stock.sku,
+      category: stock.category?.name,
       action: stock.action,
       oldquantity: stock.quantity,
       newquantity: stock.newquantity,
@@ -127,12 +132,13 @@ const getUpdate = (req, res) => {
 
 const getRemove = (req, res) => {
 
-  stockModel.find({action: "Remove" })
+  stockModel.find({action: "Remove" }).populate("category", "name")
   .then((stocks) => 
   {
     const result = stocks.map((stock) => ({
       product: stock.Name,
-      category: stock.category,
+      sku:stock.sku,
+      category: stock.category?.name,
       action: stock.action,
       oldquantity: stock.quantity,
       newquantity: stock.newquantity,
@@ -150,15 +156,16 @@ const getRemove = (req, res) => {
 
 //search
 const findStock = (req, res) => {
-  const { search = "", action, category, user } = req.query;
+  const { search = "", action, category, sku } = req.query;
 
   stockModel
-  .find()
+  .find().populate("category", "name")
   .then((stocks)=>{
 
   let result = stocks.map((stock) => ({
     product: stock.Name,
-    category: stock.category,
+    sku:stock.sku,
+    category: stock.category?.name,
     action: stock.action,
     oldquantity: stock.quantity,
     newquantity: stock.newquantity,
@@ -192,12 +199,12 @@ const findStock = (req, res) => {
       .includes(category.toLowerCase())
     )
   }
-  if(user)
+  if(sku)
   {
     result = result.filter(stock =>
     
-      stock.performedBy?.userName.toLowerCase()
-      .includes(user.toLowerCase())
+      stock.sku.toLowerCase()
+      .includes(sku.toLowerCase())
     )
   }
   res.json({count:result.length,data:result});
