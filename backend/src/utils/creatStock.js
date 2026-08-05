@@ -1,14 +1,14 @@
 const { stockModel } = require("../models/stock.model");
 
-const createStock = async (productId,action,quantity,categoryId,userID) => {
+const createStock = async (productName,categoryId,quantity,newquantity,action,userID) => {
 
     return await stockModel.create({
-        productName: productId,
+        Name: productName,
         category: categoryId,
-        action:action,
         quantity:quantity,
+        newquantity: newquantity,
+        action:action,
         performedBy:userID
-
     });
 
     return stockMove;
