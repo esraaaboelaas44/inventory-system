@@ -51,12 +51,12 @@ export class Sidebar {
     // },
     {
       label: 'Suppliers',
-      route: '/suppliers',
+      route: '/supplier',
       icon: ['M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2','M13 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0','M22 21v-2a4 4 0 0 0-3-3.87','M16 3.13a4 4 0 0 1 0 7.75',],
     },
     {
       label: 'Orders',
-      route: '/orders',
+      route: '/order',
       icon: ['M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2','M9 2h6v4H9z','M9 12h6','M9 16h4',],
     },
     {

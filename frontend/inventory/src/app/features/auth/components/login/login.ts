@@ -1,27 +1,66 @@
-import { Component, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../../core/services/auth.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule, NgForm } from '@angular/forms';
+import { ChangeDetectorRef } from '@angular/core';
+import { AuthService } from '../../../../core/services/auths.service';
+import { LoginModel } from '../../../../models/login';
+
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './login.html',
-  styleUrl: './login.css',
+  styleUrls: ['./login.css'],
 })
-export class Login {
-  private readonly authService = inject(AuthService);
-  private readonly router = inject(Router);
+  
+export class LoginComponent {
 
-  username = '';
-  password = '';
+  loginData: LoginModel = {
+    email: '',
+    password: '',
+  };
+
   rememberMe = false;
+  isLoading = false;
+  errorMessage = '';
+
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   login(): void {
-    this.authService.login(this.username, this.password).subscribe({
-      next: () => this.router.navigate(['/products']),
-      error: (error) => alert(error.error?.message ?? 'Unable to sign in. Please try again.'),
+
+    this.errorMessage = '';
+    this.isLoading = true;
+
+    this.authService.login(this.loginData, this.rememberMe).subscribe({
+
+      next: (res) => {
+
+        this.isLoading = false;
+
+        console.log(res);
+
+        this.router.navigate(['/products']);
+
+      },
+
+      error: (err) => {
+
+        this.isLoading = false;
+
+        this.errorMessage =
+          err?.error?.message ||
+          'Login failed';
+
+      }
+
     });
+
   }
+
 }
