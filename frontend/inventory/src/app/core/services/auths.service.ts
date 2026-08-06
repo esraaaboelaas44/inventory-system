@@ -67,40 +67,40 @@ export class AuthService {
     );
   }
 
-  forgotPassword(
-    payload: ForgotPasswordModel
-  ): Observable<{ success: boolean; message: string }> {
+forgotPassword(
+  payload: ForgotPasswordModel
+): Observable<{ success: boolean; message: string }> {
 
-    return this.http.post<{
-      success: boolean;
-      message: string;
-    }>(
-      `${this.apiUrl}/forgot-password`,
+  return this.http.post<{
+    success: boolean;
+    message: string;
+  }>(
+    `${this.apiUrl}/forgot-password`,
+    payload
+  );
+}
+
+resetPassword(
+  token: string,
+  payload: ResetPasswordModel,
+  rememberMe = true
+): Observable<AuthModel> {
+
+  return this.http
+    .post<AuthModel>(
+      `${this.apiUrl}/reset-password/${token}`,
       payload
+    )
+    .pipe(
+      tap((response) => {
+        this.setSession(
+          response.token,
+          response.data,
+          rememberMe
+        );
+      })
     );
-  }
-
-  resetPassword(
-    token: string,
-    payload: ResetPasswordModel,
-    rememberMe = true
-  ): Observable<AuthModel> {
-
-    return this.http
-      .post<AuthModel>(
-        `${this.apiUrl}/reset-password/${token}`,
-        payload
-      )
-      .pipe(
-        tap((response) => {
-          this.setSession(
-            response.token,
-            response.data,
-            rememberMe
-          );
-        })
-      );
-  }
+}
 
   private setSession(
     token: string,

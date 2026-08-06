@@ -2,14 +2,20 @@ import { Routes } from '@angular/router';
 
 import { ProductsList } from './features/products/components/products-list/products-list';
 import { LoginComponent } from './features/auth/components/login/login';
+import { ForgotPasswordComponent } from './features/auth/components/forgot-password/forgot-password';
+import { ResetPasswordComponent } from './features/auth/components/reset-password/reset-password';
+
 import { AddUpdateSupplier } from './features/supplier/add-update-supplier/add-update-supplier';
 import { Supplier } from './features/supplier/supplier';
 import { Order } from './features/order/order';
+
 import { authGuard } from './guards/auth.guard';
+
 import { Users } from './features/auth/components/users/users';
 import { UserForm } from './features/auth/components/user-form/user-form';
 
 export const routes: Routes = [
+
   {
     path: '',
     redirectTo: 'login',
@@ -19,6 +25,16 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+
+  {
+    path: 'forgot-password',
+    component: ForgotPasswordComponent
+  },
+
+  {
+    path: 'reset-password/:token',
+    component: ResetPasswordComponent
   },
 
   {
@@ -70,4 +86,5 @@ export const routes: Routes = [
     path: '**',
     redirectTo: 'login'
   }
+
 ];
