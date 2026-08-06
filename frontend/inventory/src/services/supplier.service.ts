@@ -25,4 +25,8 @@ export class SupplierService {
   deleteSupplier(_id: string): any {
     return this.http.delete(`http://localhost:5000/api/suppliers/${_id}`);
   }
+
+  editSupplier(_id: string, data: any): any {
+    return this.http.put(`http://localhost:5000/api/suppliers/${_id}`, data);
+  }
 }

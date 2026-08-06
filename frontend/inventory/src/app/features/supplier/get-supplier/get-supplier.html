@@ -250,6 +250,7 @@
         <div class="flex items-center justify-between flex-wrap gap-4 mb-6">
           <h1 class="page-title">All Suppliers</h1>
           <button
+            routerLink="./add-update-supplier"
             class="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition text-sm font-semibold"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -299,7 +300,11 @@
         <!-- Supplier Grid -->
         <div class="grid-suppliers" id="supplierGrid">
           @for (supplier1 of SUPPLIERS; track supplier1.name) {
-            <app-supplier-card [supplier]="supplier1" />
+            <app-supplier-card
+              [supplier]="supplier1"
+              (deleteSupplier)="deleteFun($event)"
+              (editSupplier)="editFun($event)"
+            />
           }
         </div>
         <!-- Empty State (hidden by default) -->

@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inventra — Add / Edit Supplier</title>
+    <!-- Tailwind via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/3.4.3/tailwind.min.js"></script>
+    <style>
+      body {
+        font-family: 'Segoe UI', ui-sans-serif, system-ui, sans-serif;
+      }
+      ::selection {
+        background-color: #1e293b;
+        color: white;
+      }
+      /* custom toggle – matches reference style */
+      .toggle {
+        width: 2.5rem;
+        height: 1.5rem;
+        background-color: #cbd5e1;
+        border-radius: 9999px;
+        position: relative;
+        transition: background-color 0.2s ease;
+        border: none;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+      .toggle::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 1.25rem;
+        height: 1.25rem;
+        background-color: white;
+        border-radius: 9999px;
+        transition: transform 0.2s ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+      }
+      .toggle.on {
+        background-color: #0f172a; /* slate-900 */
+      }
+      .toggle.on::after {
+        transform: translateX(1rem);
+      }
+      .toggle-text {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #1e293b;
+      }
+      .status-block {
+        background-color: #f8fafc;
+        border-radius: 0.75rem;
+        padding: 1rem 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+      }
+      .status-label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: #64748b;
+      }
+      .toggle-row {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      textarea {
+        resize: vertical;
+        min-height: 70px;
+      }
+      .card {
+        background-color: white;
+        border-radius: 0.75rem;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        padding: 1.5rem;
+      }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+      }
+      @media (min-width: 640px) {
+        .grid-2 {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+      .field label {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #0f172a;
+      }
+      .field input,
+      .field textarea,
+      .field select {
+        width: 100%;
+        border-radius: 0.5rem;
+        border: 1px solid #cbd5e1;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+        background-color: white;
+        color: #0f172a;
+        transition:
+          border-color 0.15s,
+          box-shadow 0.15s;
+      }
+      .field input:focus,
+      .field textarea:focus,
+      .field select:focus {
+        outline: none;
+        border-color: #0f172a;
+        box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.2);
+      }
+      .field input::placeholder,
+      .field textarea::placeholder {
+        color: #94a3b8;
+      }
+      .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+        border-top: 1px solid #e2e8f0;
+        padding-top: 1.5rem;
+      }
+      .btn {
+        padding: 0.5rem 1.25rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        font-size: 0.875rem;
+        transition:
+          background-color 0.15s,
+          color 0.15s;
+        border: none;
+        cursor: pointer;
+      }
+      .btn-cancel {
+        background-color: transparent;
+        color: #475569;
+      }
+      .btn-cancel:hover {
+        background-color: #f1f5f9;
+        color: #0f172a;
+      }
+      .btn-save {
+        background-color: #0f172a;
+        color: white;
+      }
+      .btn-save:hover {
+        background-color: #1e293b;
+      }
+      .page-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 1.5rem;
+      }
+      app-sidebar {
+        display: block;
+        width: 4rem;
+        flex-shrink: 0;
+      }
+      @media (min-width: 640px) {
+        app-sidebar {
+          width: 16rem;
+        }
+      }
+      .app {
+        display: flex;
+        min-height: 100vh;
+        background-color: #f1f5f9;
+      }
+      .content {
+        flex: 1;
+        padding: 2rem 1rem;
+        max-width: 48rem;
+        margin: 0 auto;
+        width: 100%;
+      }
+      .section-divider {
+        border: 0;
+        border-top: 1px solid #e2e8f0;
+        margin: 1.5rem 0;
+      }
+      .section-title {
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: #64748b;
+        margin-bottom: 1rem;
+      }
+      /* make contact person block visually grouped */
+      .contact-group {
+        background-color: #fafbfc;
+        border-radius: 0.75rem;
+        padding: 1rem 1.25rem;
+        border: 1px solid #eef2f6;
+        margin-top: 0.25rem;
+      }
+      .contact-group .field:last-of-type {
+        margin-bottom: 0;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-100 antialiased">
+    <div class="app">
+      <app-sidebar></app-sidebar>
+
+      <main class="content">
+        <!-- breadcrumb -->
+        <p class="text-xs font-semibold tracking-widest text-slate-400 uppercase mb-1">
+          Suppliers / Edit
+        </p>
+        <h1 class="page-title">Edit Supplier</h1>
+
+        <form class="card" novalidate (ngSubmit)="editSupplier()" #newSupplierForm="ngForm">
+          <!-- === COMPANY INFO === -->
+          <h2 class="section-title">Company Information</h2>
+          <div class="grid-2">
+            <div class="field">
+              <label for="companyName">Company Name <span class="text-rose-500">*</span></label>
+              <input
+                type="text"
+                id="companyName"
+                placeholder="Acme Corp"
+                /* #name="ngModel" */
+                name="name"
+              />
+            </div>
+            <div class="field">
+              <label for="industry">Industry</label>
+              <select
+                id="industry"
+                /* [(ngModel)]="newSupplier.industry" */
+                /* #industry="ngModel" */
+                name="industry"
+              >
+                <option value="" disabled selected>Select industry</option>
+                <option value="Technology">Technology</option>
+                <option value="Manufacturing">Manufacturing</option>
+                <option value="Retail">Retail</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Finance">Finance</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                /* [(ngModel)]="newSupplier.email" */
+                /* #email="ngModel" */
+                name="email"
+                placeholder="supplier@company.com"
+              />
+            </div>
+            <div class="field">
+              <label for="phone">Phone</label>
+              <input
+                type="tel"
+                id="phone"
+                /* [(ngModel)]="newSupplier.phone"
+                #phone="ngModel" */
+                name="phone"
+                placeholder="+1 (000) 000-0000"
+              />
+            </div>
+            <div class="field" style="grid-column: 1 / -1">
+              <label for="address">Address</label>
+              <textarea
+                id="address"
+                /* [(ngModel)]="newSupplier.address"
+                #address="ngModel" */
+                name="address"
+                placeholder="Street, city, state, zip"
+              ></textarea>
+            </div>
+          </div>
+
+          <hr class="section-divider" />
+
+          <!-- === CONTACT PERSON (emergency) === -->
+          <h2 class="section-title">Emergency Contact Person</h2>
+          <div class="contact-group">
+            <div class="grid-2">
+              <div class="field">
+                <label for="contactName">Full Name</label>
+                <input
+                  type="text"
+                  id="contactName"
+                  /* [(ngModel)]="newSupplier.contactPerson.name"
+                  name="contactPerson.name" */
+                  /* #contactName="ngModel" */
+                  placeholder="Jane Doe"
+                />
+              </div>
+              <div class="field">
+                <label for="contactEmail">Email</label>
+                <input
+                  type="email"
+                  id="contactEmail"
+                  /* [(ngModel)]="newSupplier.contactPerson.email"
+                  name="contactPerson.email" */
+                  /* #contactEmail="ngModel" */
+                  placeholder="jane.doe@example.com"
+                />
+              </div>
+              <div class="field">
+                <label for="contactPhone">Phone</label>
+                <input
+                  type="tel"
+                  id="contactPhone"
+                  /* [(ngModel)]="newSupplier.contactPerson.phone"
+                  <!-- name="contactPerson.phone" */
+                  /* #contactPhone="ngModel" --> */
+                  placeholder="+1 (000) 000-0000"
+                />
+              </div>
+              <!-- extra empty cell for layout balance (optional) -->
+              <div></div>
+            </div>
+          </div>
+
+          <hr class="section-divider" />
+
+          <!-- === STATUS (isActive) === -->
+          <div class="status-block">
+            <span class="status-label">Status</span>
+            <div class="toggle-row">
+              <button
+                type="button"
+                class="toggle on"
+                id="statusToggle"
+                aria-pressed="true"
+                aria-label="Supplier is Active"
+              ></button>
+              <span class="toggle-text" id="toggleLabel">Supplier is Active</span>
+            </div>
+          </div>
+
+          <!-- === ACTIONS === -->
+          <div class="actions">
+            <button type="button" class="btn btn-cancel">Cancel</button>
+            <button type="submit" class="btn btn-save">Save Changes</button>
+          </div>
+        </form>
+      </main>
+    </div>
+  </body>
+</html>

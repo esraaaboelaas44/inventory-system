@@ -11,6 +11,7 @@ export class SupplierCard {
   @Input()
   supplier!: iSupplier;
   @Output() deleteSupplier = new EventEmitter<String>();
+  @Output() editSupplier = new EventEmitter<String>();
 
   onDelete(event: Event): void {
     event.stopPropagation();
@@ -20,5 +21,12 @@ export class SupplierCard {
       this.deleteSupplier.emit(`${this.supplier._id}`);
     }
     this.deleteSupplier.emit(this.supplier._id);
+  }
+
+  onEdit(event: Event): void {
+    event.stopPropagation();
+
+    console.log(`pressed delete on ${this.supplier.name}`);
+    this.editSupplier.emit(this.supplier._id);
   }
 }
