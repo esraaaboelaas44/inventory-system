@@ -10,7 +10,6 @@ import { Users } from './features/auth/components/users/users';
 import { UserForm } from './features/auth/components/user-form/user-form';
 
 export const routes: Routes = [
-
   {
     path: '',
     redirectTo: 'login',
@@ -18,32 +17,27 @@ export const routes: Routes = [
   },
 
   {
-  path: 'users',
-  canActivate: [authGuard],
-
-  children: [
-    {
-      path: '',
-      component: Users
-    },
-
-    {
-      path: 'add',
-      component: UserForm
-    },
-
-    {
-      path: 'edit/:id',
-      component: UserForm
-    }
-  ]
+    path: 'login',
+    component: LoginComponent
   },
 
-{
-  path: 'login',
-  component: LoginComponent
-},
+  {
+    path: 'users',
+    component: Users,
+    canActivate: [authGuard]
+  },
 
+  {
+    path: 'users/add',
+    component: UserForm,
+    canActivate: [authGuard]
+  },
+
+  {
+    path: 'users/edit/:id',
+    component: UserForm,
+    canActivate: [authGuard]
+  },
 
   {
     path: 'products',
@@ -51,25 +45,20 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
 
-
   {
     path: 'supplier',
     canActivate: [authGuard],
     children: [
-
       {
         path: '',
         component: Supplier
       },
-
       {
         path: 'add-update-supplier',
         component: AddUpdateSupplier
       }
-
     ]
   },
-
 
   {
     path: 'order',
@@ -77,10 +66,8 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
 
-
   {
     path: '**',
     redirectTo: 'login'
   }
-
 ];

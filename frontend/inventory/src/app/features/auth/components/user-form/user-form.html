@@ -8,27 +8,18 @@
 
       <div>
         <h1>
-          {{
-            isEditMode
-              ? 'Edit User'
-              : 'Add User'
-          }}
+          {{ isEditMode ? 'Edit User' : 'Add User' }}
         </h1>
 
         <p>
-          {{
-            isEditMode
-              ? 'Update the selected user information'
-              : 'Create a new system user'
-          }}
+          {{ isEditMode ? 'Update the selected user information' : 'Create a new system user' }}
         </p>
       </div>
 
       <button
         type="button"
         class="back-btn"
-        (click)="cancel()"
-      >
+        (click)="cancel()">
         Back
       </button>
 
@@ -36,40 +27,37 @@
 
     <p
       class="loading-message"
-      *ngIf="loading"
-    >
+      *ngIf="loading">
       Loading user data...
+    </p>
+
+    <p
+      class="error-message"
+      *ngIf="errorMessage">
+      {{ errorMessage }}
     </p>
 
     <form
       *ngIf="!loading"
       class="user-form-card"
       [formGroup]="form"
-      (ngSubmit)="submit()"
-    >
+      (ngSubmit)="submit()">
 
       <div class="form-grid">
 
         <div class="form-group">
 
-          <label for="name">
-            Name
-          </label>
+          <label for="name">Name</label>
 
           <input
             id="name"
             type="text"
             formControlName="name"
-            placeholder="Enter user name"
-          >
+            placeholder="Enter user name">
 
           <small
             class="field-error"
-            *ngIf="
-              form.get('name')?.touched &&
-              form.get('name')?.invalid
-            "
-          >
+            *ngIf="form.get('name')?.touched && form.get('name')?.invalid">
             Name must contain at least 2 characters.
           </small>
 
@@ -77,24 +65,17 @@
 
         <div class="form-group">
 
-          <label for="email">
-            Email
-          </label>
+          <label for="email">Email</label>
 
           <input
             id="email"
             type="email"
             formControlName="email"
-            placeholder="Enter email address"
-          >
+            placeholder="Enter email address">
 
           <small
             class="field-error"
-            *ngIf="
-              form.get('email')?.touched &&
-              form.get('email')?.invalid
-            "
-          >
+            *ngIf="form.get('email')?.touched && form.get('email')?.invalid">
             Enter a valid email address.
           </small>
 
@@ -102,36 +83,23 @@
 
         <div class="form-group">
 
-          <label for="password">
-            Password
-          </label>
+          <label for="password">Password</label>
 
           <input
             id="password"
             type="password"
             formControlName="password"
-            [placeholder]="
-              isEditMode
-                ? 'Leave empty to keep current password'
-                : 'Enter password'
-            "
-          >
+            [placeholder]="isEditMode ? 'Leave empty to keep current password' : 'Enter password'">
 
           <small
             class="field-hint"
-            *ngIf="isEditMode"
-          >
-            Leave this field empty if the password
-            should not change.
+            *ngIf="isEditMode">
+            Leave this field empty if the password should not change.
           </small>
 
           <small
             class="field-error"
-            *ngIf="
-              form.get('password')?.touched &&
-              form.get('password')?.invalid
-            "
-          >
+            *ngIf="form.get('password')?.touched && form.get('password')?.invalid">
             Password must contain at least 6 characters.
           </small>
 
@@ -139,25 +107,14 @@
 
         <div class="form-group">
 
-          <label for="role">
-            Role
-          </label>
+          <label for="role">Role</label>
 
           <select
             id="role"
-            formControlName="role"
-          >
-            <option value="admin">
-              Admin
-            </option>
-
-            <option value="manager">
-              Manager
-            </option>
-
-            <option value="staff">
-              Staff
-            </option>
+            formControlName="role">
+            <option value="admin">Admin</option>
+            <option value="manager">Manager</option>
+            <option value="staff">Staff</option>
           </select>
 
         </div>
@@ -168,21 +125,11 @@
 
         <input
           type="checkbox"
-          formControlName="isActive"
-        >
+          formControlName="isActive">
 
-        <span>
-          Active user
-        </span>
+        <span>Active user</span>
 
       </label>
-
-      <p
-        class="error-message"
-        *ngIf="errorMessage"
-      >
-        {{ errorMessage }}
-      </p>
 
       <div class="form-actions">
 
@@ -190,22 +137,16 @@
           type="button"
           class="cancel-btn"
           (click)="cancel()"
-          [disabled]="submitting"
-        >
+          [disabled]="submitting">
           Cancel
         </button>
 
         <button
           type="submit"
           class="submit-btn"
-          [disabled]="submitting"
-        >
+          [disabled]="submitting">
           <span *ngIf="!submitting">
-            {{
-              isEditMode
-                ? 'Update User'
-                : 'Add User'
-            }}
+            {{ isEditMode ? 'Update User' : 'Add User' }}
           </span>
 
           <span *ngIf="submitting">

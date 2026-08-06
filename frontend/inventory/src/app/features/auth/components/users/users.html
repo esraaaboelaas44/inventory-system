@@ -11,8 +11,7 @@
       <button
         type="button"
         class="add-btn"
-        (click)="addUser()"
-      >
+        (click)="addUser()">
         Add User
       </button>
 
@@ -20,22 +19,19 @@
 
     <p
       class="loading-message"
-      *ngIf="loadingUsers"
-    >
+      *ngIf="loadingUsers">
       Loading users...
     </p>
 
     <p
       class="error-message"
-      *ngIf="usersError"
-    >
+      *ngIf="usersError">
       {{ usersError }}
     </p>
 
     <div
       class="table-card"
-      *ngIf="!loadingUsers"
-    >
+      *ngIf="!loadingUsers">
 
       <table>
 
@@ -54,43 +50,26 @@
           <tr
             *ngFor="let user of users"
             class="clickable-row"
-            (click)="editUser(user._id)"
-          >
+            (click)="editUser(user._id)">
 
             <td>{{ user._id }}</td>
-
             <td>{{ user.name }}</td>
-
             <td>{{ user.role }}</td>
-
-            <td>
-              {{
-                user.createdAt
-                  | date:'dd-MM-yyyy'
-              }}
-            </td>
+            <td>{{ user.createdAt | date:'dd-MM-yyyy' }}</td>
 
             <td>
 
               <button
                 type="button"
                 class="edit-btn"
-                (click)="
-                  $event.stopPropagation();
-                  editUser(user._id)
-                "
-              >
+                (click)="$event.stopPropagation(); editUser(user._id)">
                 Edit
               </button>
 
               <button
                 type="button"
                 class="delete-btn"
-                (click)="
-                  $event.stopPropagation();
-                  deleteUser(user._id)
-                "
-              >
+                (click)="$event.stopPropagation(); deleteUser(user._id)">
                 Delete
               </button>
 
@@ -101,8 +80,7 @@
           <tr *ngIf="users.length === 0">
             <td
               colspan="5"
-              class="empty-message"
-            >
+              class="empty-message">
               No users found
             </td>
           </tr>
@@ -119,22 +97,19 @@
 
     <p
       class="loading-message"
-      *ngIf="loadingLogs"
-    >
+      *ngIf="loadingLogs">
       Loading user logs...
     </p>
 
     <p
       class="error-message"
-      *ngIf="logsError"
-    >
+      *ngIf="logsError">
       {{ logsError }}
     </p>
 
     <div
       class="table-card"
-      *ngIf="!loadingLogs"
-    >
+      *ngIf="!loadingLogs">
 
       <table>
 
@@ -150,33 +125,16 @@
         <tbody>
 
           <tr *ngFor="let log of logs">
-
-            <td>
-              {{ getLogUserName(log) }}
-            </td>
-
-            <td>
-              {{ getLogUserId(log) }}
-            </td>
-
-            <td>
-              {{ log.action }}
-            </td>
-
-            <td>
-              {{
-                getLogTimestamp(log)
-                  | date:'dd-MM-yyyy HH:mm'
-              }}
-            </td>
-
+            <td>{{ getLogUserName(log) }}</td>
+            <td>{{ getLogUserId(log) }}</td>
+            <td>{{ log.action }}</td>
+            <td>{{ getLogTimestamp(log) | date:'dd-MM-yyyy HH:mm' }}</td>
           </tr>
 
           <tr *ngIf="logs.length === 0">
             <td
               colspan="4"
-              class="empty-message"
-            >
+              class="empty-message">
               No user logs found
             </td>
           </tr>

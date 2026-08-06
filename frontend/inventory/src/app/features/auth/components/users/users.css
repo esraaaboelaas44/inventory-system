@@ -1,189 +1,107 @@
 .page {
-
   min-height: 100vh;
   background: white;
   display: flex;
-
 }
 
-
 .content {
-
   flex: 1;
   padding: 35px;
   background: white;
-
 }
-
-
 
 .header {
-
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:30px;
-
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
 }
-
 
 .header h1 {
-
-  font-size:32px;
-  font-weight:700;
-  color:#111827;
-
+  font-size: 32px;
+  font-weight: 700;
+  color: #111827;
 }
-
-
 
 .add-btn {
-
-  background:#0C245B;
-  color:white;
-
-  border:none;
-  padding:12px 25px;
-
-  border-radius:8px;
-
-  font-size:15px;
-  font-weight:600;
-
-  cursor:pointer;
-
-  transition:.2s;
-
+  background: #0c245b;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
 }
-
 
 .add-btn:hover {
-
-  opacity:.9;
-
+  opacity: 0.9;
 }
-
-
 
 .table-card {
-
-  width:100%;
-  overflow:hidden;
-
-  border:1px solid #d9e2ec;
-
-  border-radius:8px;
-
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid #d9e2ec;
+  border-radius: 8px;
+  margin-bottom: 24px;
 }
-
-
 
 table {
-
-  width:100%;
-  border-collapse:collapse;
-
+  width: 100%;
+  border-collapse: collapse;
 }
-
-
 
 thead {
-
-  background:#e8f0f5;
-
+  background: #e8f0f5;
 }
-
-
 
 th {
-
-  padding:14px;
-  text-align:left;
-
-  font-size:14px;
-
-  color:#1f2937;
-
+  padding: 14px;
+  text-align: left;
+  font-size: 14px;
+  color: #1f2937;
 }
-
-
 
 td {
-
-  padding:14px;
-
-  border-top:1px solid #e5e7eb;
-
-  font-size:14px;
-
+  padding: 14px;
+  border-top: 1px solid #e5e7eb;
+  font-size: 14px;
 }
-
-
 
 .edit-btn,
 .delete-btn {
-
-
-  border:none;
-
-  padding:8px 18px;
-
-  border-radius:7px;
-
-  color:white;
-
-  cursor:pointer;
-
-  margin-right:8px;
-
-  font-weight:500;
-
+  border: none;
+  padding: 8px 18px;
+  border-radius: 7px;
+  color: white;
+  cursor: pointer;
+  margin-right: 8px;
+  font-weight: 500;
 }
-
-
 
 .edit-btn {
-
-  background:#2563EB;
-
+  background: #2563eb;
 }
-
-
 
 .edit-btn:hover {
-
-  background:#1D4ED8;
-
+  background: #1d4ed8;
 }
-
-
 
 .delete-btn {
-
-  background:#DC2626;
-
+  background: #dc2626;
 }
-
-
 
 .delete-btn:hover {
-
-  background:#B91C1C;
-
+  background: #b91c1c;
 }
 
-
-
 .logs-title {
-
-  margin-top:55px;
-
-  margin-bottom:20px;
-
-  font-size:28px;
-
-  font-weight:700;
-
+  margin-top: 55px;
+  margin-bottom: 20px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
 }
 
 .clickable-row {
@@ -213,4 +131,28 @@ td {
   padding: 28px;
   text-align: center;
   color: #64748b;
+}
+
+@media (max-width: 900px) {
+  .content {
+    padding: 20px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .header h1 {
+    font-size: 26px;
+  }
+
+  .logs-title {
+    font-size: 22px;
+  }
+
+  .table-card {
+    overflow-x: auto;
+  }
 }

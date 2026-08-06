@@ -1,11 +1,7 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
-
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { ChangeDetectorRef } from '@angular/core';
+
 import { Sidebar } from '../../../../shared/components/sidebar/sidebar';
 
 import { User } from '../../../../models/user';
@@ -57,21 +53,16 @@ export class Users implements OnInit {
         this.loadingUsers = false;
         this.cdr.detectChanges();
       },
-      
-
       error: (error) => {
-        console.error(
-          'Error loading users:',
-          error
-        );
+        console.error('Error loading users:', error);
 
         this.usersError =
           error.error?.message ??
           'Failed to load users';
 
         this.loadingUsers = false;
+        this.cdr.detectChanges();
       }
-      
     });
   }
 
@@ -82,38 +73,31 @@ export class Users implements OnInit {
     this.userLogService.getLogs().subscribe({
       next: (logs) => {
         this.logs = [...logs]
-          .sort((first, second) => {
-            const firstTime = new Date(
-              first.timestamp ??
-              first.createdAt ??
-              0
+          .sort((a, b) => {
+            const first = new Date(
+              a.timestamp ?? a.createdAt ?? 0
             ).getTime();
 
-            const secondTime = new Date(
-              second.timestamp ??
-              second.createdAt ??
-              0
+            const second = new Date(
+              b.timestamp ?? b.createdAt ?? 0
             ).getTime();
 
-            return secondTime - firstTime;
+            return second - first;
           })
           .slice(0, 6);
 
         this.loadingLogs = false;
         this.cdr.detectChanges();
       },
-
       error: (error) => {
-        console.error(
-          'Error loading logs:',
-          error
-        );
+        console.error('Error loading logs:', error);
 
         this.logsError =
           error.error?.message ??
           'Failed to load user logs';
 
         this.loadingLogs = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -123,10 +107,7 @@ export class Users implements OnInit {
   }
 
   editUser(id: string): void {
-    this.router.navigate([
-      '/users/edit',
-      id
-    ]);
+    this.router.navigate(['/users/edit', id]);
   }
 
   deleteUser(id: string): void {
@@ -143,17 +124,15 @@ export class Users implements OnInit {
         this.loadUsers();
         this.loadLogs();
       },
-
       error: (error) => {
-        console.error(
-          'Error deleting user:',
-          error
-        );
+        console.error('Error deleting user:', error);
 
-        alert(
+        this.usersError =
           error.error?.message ??
-          'Failed to delete user'
-        );
+          'Failed to delete user';
+
+        this.loadingUsers = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -163,10 +142,7 @@ export class Users implements OnInit {
       return log.user.name;
     }
 
-    if (
-      typeof log.userId === 'object' &&
-      log.userId?.name
-    ) {
+    if (typeof log.userId === 'object' && log.userId?.name) {
       return log.userId.name;
     }
 
@@ -186,24 +162,14 @@ export class Users implements OnInit {
       return log.userId;
     }
 
-    if (
-      typeof log.userId === 'object' &&
-      log.userId?._id
-    ) {
+    if (typeof log.userId === 'object' && log.userId?._id) {
       return log.userId._id;
     }
 
     return '-';
   }
 
-  getLogTimestamp(
-    log: UserLog
-  ): string | null {
-
-    return (
-      log.timestamp ??
-      log.createdAt ??
-      null
-    );
+  getLogTimestamp(log: UserLog): string | null {
+    return log.timestamp ?? log.createdAt ?? null;
   }
 }
