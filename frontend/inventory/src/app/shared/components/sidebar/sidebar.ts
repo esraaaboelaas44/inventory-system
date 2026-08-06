@@ -1,6 +1,10 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import {
+  Router,
+  RouterLink,
+  RouterLinkActive,
+} from '@angular/router';
 
 import { Isidebar } from '../../models/isidebar';
 import { AuthService } from '../../../core/services/auths.service';
@@ -10,14 +14,13 @@ import { AuthService } from '../../../core/services/auths.service';
   standalone: true,
   imports: [
     CommonModule,
-    RouterLink
+    RouterLink,
+    RouterLinkActive
   ],
   templateUrl: './sidebar.html',
   styleUrls: ['./sidebar.css'],
 })
 export class Sidebar {
-
-  activeItem = 'Stock';
 
   user = {
     name: 'Ahmed Ali',
@@ -35,8 +38,7 @@ export class Sidebar {
   ) {
     this.checkScreen();
 
-    const currentUser =
-      this.authService.getStoredUser();
+    const currentUser = this.authService.getStoredUser();
 
     if (currentUser) {
       this.user = {
@@ -113,8 +115,7 @@ export class Sidebar {
   @HostListener('window:resize')
   checkScreen(): void {
 
-    this.isMobile =
-      window.innerWidth <= 900;
+    this.isMobile = window.innerWidth <= 900;
 
     if (!this.isMobile) {
       this.expanded = true;
@@ -131,19 +132,6 @@ export class Sidebar {
     if (this.isMobile) {
       this.expanded = false;
     }
-  }
-
-  setActive(item: Isidebar): void {
-
-    this.activeItem = item.label;
-
-    if (this.isMobile) {
-      this.expanded = false;
-    }
-  }
-
-  isActive(item: Isidebar): boolean {
-    return this.activeItem === item.label;
   }
 
   get userInitial(): string {
