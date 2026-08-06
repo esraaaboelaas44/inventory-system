@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormsModule,
@@ -30,7 +30,8 @@ export class ForgotPasswordComponent {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   submit(form: NgForm): void {
@@ -39,10 +40,13 @@ export class ForgotPasswordComponent {
     this.errorMessage = '';
 
     if (form.invalid) {
+      form.control.markAllAsTouched();
+      this.cdr.detectChanges();
       return;
     }
 
     this.loading = true;
+    this.cdr.detectChanges();
 
     this.authService
       .forgotPassword({
@@ -57,6 +61,8 @@ export class ForgotPasswordComponent {
           this.successMessage =
             response.message ??
             'Password reset link sent successfully.';
+
+          this.cdr.detectChanges();
         },
 
         error: (error) => {
@@ -66,6 +72,8 @@ export class ForgotPasswordComponent {
           this.errorMessage =
             error.error?.message ??
             'Failed to send reset link.';
+
+          this.cdr.detectChanges();
         }
 
       });

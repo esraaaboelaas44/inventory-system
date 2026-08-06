@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  ChangeDetectorRef
+} from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 
@@ -41,7 +44,8 @@ export class ResetPasswordComponent {
   constructor(
     private authService: AuthService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {
 
     this.token =
@@ -55,6 +59,8 @@ export class ResetPasswordComponent {
     this.errorMessage = '';
 
     if (form.invalid) {
+      form.control.markAllAsTouched();
+      this.cdr.detectChanges();
       return;
     }
 
@@ -63,10 +69,13 @@ export class ResetPasswordComponent {
       this.errorMessage =
         'Passwords do not match.';
 
+      this.cdr.detectChanges();
+
       return;
     }
 
     this.loading = true;
+    this.cdr.detectChanges();
 
     this.authService
       .resetPassword(
@@ -84,6 +93,8 @@ export class ResetPasswordComponent {
           this.successMessage =
             'Password changed successfully. Redirecting...';
 
+          this.cdr.detectChanges();
+
           setTimeout(() => {
 
             this.router.navigate(['/login']);
@@ -99,6 +110,8 @@ export class ResetPasswordComponent {
           this.errorMessage =
             error.error?.message ??
             'Failed to reset password.';
+
+          this.cdr.detectChanges();
 
         }
 
