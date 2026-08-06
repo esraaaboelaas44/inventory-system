@@ -8,7 +8,6 @@ import { Supplier } from '../../../../models/supplier';
 import { CategoryService } from '../../../../core/services/category.service';
 import { ProductPayload, ProductService } from '../../../../core/services/product.service';
 import { SupplierService } from '../../../../core/services/supplier.service';
-import { AuthService } from '../../../../core/services/auth.service';
 import { Sidebar } from '../../../../shared/components/sidebar/sidebar';
 
 @Component({
@@ -23,7 +22,6 @@ export class ProductsList implements OnInit {
   private readonly productService = inject(ProductService);
   private readonly categoryService = inject(CategoryService);
   private readonly supplierService = inject(SupplierService);
-  private readonly authService = inject(AuthService);
 
   products: Product[] = [];
   categoriesData: Category[] = [];
@@ -68,9 +66,19 @@ export class ProductsList implements OnInit {
     status: ['active' as 'active' | 'inactive', Validators.required],
   });
 
-  get currentRole(): string {
-    return this.authService.getCurrentUser()?.role?.toLowerCase() ?? 'staff';
+  private getRoleFromToken(): string {
+  const user = localStorage.getItem('inventory_auth_user');
+  if (!user) return 'staff';
+  try {
+    return JSON.parse(user).role?.toLowerCase() ?? 'staff';
+  } catch {
+    return 'staff';
   }
+}
+
+get currentRole(): string {
+  return this.getRoleFromToken();
+}
 
   get canEditInventory(): boolean {
     return this.currentRole === 'admin' || this.currentRole === 'manager';
