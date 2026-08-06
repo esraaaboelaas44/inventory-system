@@ -9,6 +9,9 @@ import { CategoryService } from '../../../../core/services/category.service';
 import { ProductPayload, ProductService } from '../../../../core/services/product.service';
 import { SupplierService } from '../../../../core/services/supplier.service';
 import { Sidebar } from '../../../../shared/components/sidebar/sidebar';
+import { AuthService } from '../../../../core/services/auths.service';
+
+
 
 @Component({
   selector: 'app-products-list',
@@ -22,6 +25,8 @@ export class ProductsList implements OnInit {
   private readonly productService = inject(ProductService);
   private readonly categoryService = inject(CategoryService);
   private readonly supplierService = inject(SupplierService);
+  private readonly authService = inject(AuthService);
+
 
   products: Product[] = [];
   categoriesData: Category[] = [];
@@ -67,13 +72,8 @@ export class ProductsList implements OnInit {
   });
 
   private getRoleFromToken(): string {
-  const user = localStorage.getItem('inventory_auth_user');
-  if (!user) return 'staff';
-  try {
-    return JSON.parse(user).role?.toLowerCase() ?? 'staff';
-  } catch {
-    return 'staff';
-  }
+  return this.authService.getStoredUser()?.role?.toLowerCase() ?? 'staff';
+
 }
 
 get currentRole(): string {
@@ -315,13 +315,13 @@ get currentRole(): string {
 
     request.subscribe({
       next: () => {
-        this.loadInventoryData();
         this.showForm = false;
         this.clearPendingAction();
         this.showToast(
           this.isEditing ? 'Product updated successfully.' : 'Product added successfully.',
           'success',
         );
+        this.loadInventoryData();
       },
       error: (error) => {
         this.clearPendingAction();
@@ -418,7 +418,6 @@ get currentRole(): string {
 
     request.subscribe({
       next: () => {
-        this.loadInventoryData();
         this.showCategoryForm = false;
         this.clearPendingAction();
         this.showToast(
@@ -427,6 +426,7 @@ get currentRole(): string {
             : 'Category added successfully.',
           'success',
         );
+        this.loadInventoryData();
       },
       error: (error) => {
         this.clearPendingAction();
