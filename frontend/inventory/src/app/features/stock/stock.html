@@ -1,0 +1,270 @@
+
+<div class="layout">
+  
+<app-sidebar></app-sidebar>
+
+  <main class="page">
+    
+    <!-- ===== الهيدر: العنوان + الـ breadcrumb + الأيقونات ===== -->
+    <header class="page-head">
+      <div>
+        <h1 class="page-title">Stock Movements</h1>
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span>StockMovement</span>
+        </nav>
+      </div>
+
+    </header>
+
+    <!-- ===== كروت الإحصائيات ===== -->
+ <section class="stats">
+  @for (s of stats(); track $index) {
+    <article class="stat-card">
+      <div class="stat-top">
+        <span class="stat-icon">
+
+          @if (s.icon === 'box') {
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linejoin="round" />
+              <path d="m3.3 7 8.7 5 8.7-5M12 22V12"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linejoin="round" />
+            </svg>
+          }
+
+          @if (s.icon === 'up') {
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 20V5M6 11l6-6 6 6"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+          }
+
+          @if (s.icon === 'down') {
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 4v15M6 13l6 6 6-6"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+          }
+
+          @if (s.icon === 'refresh') {
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-7.5-4M3 12a9 9 0 0 1 9-9 9 9 0 0 1 7.5 4"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round" />
+              <path d="M3 4v4h4M21 20v-4h-4"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+          }
+
+        </span>
+
+        <div class="stat-body">
+          <p class="stat-label">{{ s.label }}</p>
+          <p class="stat-value">{{ s.value }}</p>
+        </div>
+      </div>
+
+      <div class="stat-foot">
+        <span class="stat-period">{{ s.period }}</span>
+
+        <span class="stat-trend">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M7 17 17 7M9 7h8v8"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round" />
+          </svg>
+          {{ s.trend }}
+        </span>
+      </div>
+    </article>
+  }
+</section>
+
+    <!-- ===== كارت الجدول (فلاتر + جدول + ترقيم) ===== -->
+    <section class="panel">
+      <!-- ===== شريط الفلاتر ===== -->
+      <div class="filters">
+        <div class="search-field">
+          <input
+            type="text"
+            placeholder="Search by product name..."
+            [ngModel]="search()"
+            (ngModelChange)="search.set($event); onFilterChange()"
+          />
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8" />
+            <path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
+        </div>
+
+        <div class="select-field">
+          <select [ngModel]="selectedAction()" (ngModelChange)="selectedAction.set($event); onFilterChange()">
+            <option *ngFor="let a of actions" [value]="a">{{ a }}</option>
+          </select>
+        </div>
+
+        <div class="select-field">
+          <select [ngModel]="selectedCategory()" (ngModelChange)="selectedCategory.set($event); onFilterChange()">
+            <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+          </select>
+        </div>
+
+        <div class="select-field">
+          <select [ngModel]="selectedUser()" (ngModelChange)="selectedUser.set($event); onFilterChange()">
+            <option *ngFor="let u of users" [value]="u">{{ u }}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ===== جدول حركات المخزون ===== -->
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="w-hash">id</th>
+            <th>Product</th>
+            <th>Category</th>
+            <th>Action</th>
+            <th>Old Qty</th>
+            <th>New Qty</th>
+            <th>Change</th>
+            <th>Performed By</th>
+            <th>Date &amp; Time</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (m of paged(); track $index; let i = $index) {
+            <tr>
+              <td class="muted">{{ rangeStart() + i }}</td>
+
+              <td>
+                <div class="product-cell">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    @for (d of m.image; track d) {
+                    <path
+                        [attr.d]="d"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+                    }
+                </svg>
+
+                  <div>
+                    <p class="product-name">{{ m.product }}</p>
+                    <p class="product-sku">SKU: {{ m.sku }}</p>
+                  </div>
+                </div>
+              </td>
+
+              <td class="muted">{{ m.category }}</td>
+
+              <!-- Badge نوع العملية -->
+              <td>
+                <span [class]="badgeClass(m.action)">
+                  {{ m.action }}
+                </span>
+              </td>
+
+              <td class="muted">{{ m.oldQty }}</td>
+
+              <td class="muted">{{ m.newQty }}</td>
+
+              <!-- الفرق -->
+              <td>
+                <span
+                  class="change"
+                  [class.up]="change(m) >= 0"
+                  [class.down]="change(m) < 0">
+                  {{ changeLabel(m) }}
+                </span>
+              </td>
+
+              <!-- المستخدم -->
+              <td>
+                <div class="user-cell">
+                  <span class="mini-avatar">
+                    {{ initial(m.performedBy) }}
+                  </span>
+                  <span>{{ m.performedBy }}</span>
+                </div>
+              </td>
+
+              <!-- التاريخ -->
+              <td>
+                <p class="date-day">
+                  {{ m.date | date:'dd/MM/yyyy' }}
+                </p>
+                <p class="date-time">
+                  {{ m.date | date:'hh:mm a' }}
+                </p>
+              </td>
+              <td>
+              <button (click)="deleteMovement(m.id); 'console.log(m.id)'">
+                Delete
+              </button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="9" class="empty">
+                No stock movements found.
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+      <!-- ===== الفوتر: عدد النتائج + الترقيم + حجم الصفحة ===== -->
+      <div class="panel-foot">
+        <p class="results">
+          Showing {{ rangeStart() }} to {{ rangeEnd() }} of {{ filtered().length }} results
+        </p>
+
+        <div class="pagination">
+          <button type="button" (click)="goToPage(1)" [disabled]="currentPage() === 1" aria-label="First page">&laquo;</button>
+          <button type="button" (click)="goToPage(currentPage() - 1)" [disabled]="currentPage() === 1" aria-label="Previous page">&lsaquo;</button>
+
+          <button
+            type="button"
+            *ngFor="let p of pages()"
+            class="page-num"
+            [class.active]="p === currentPage()"
+            (click)="goToPage(p)"
+          >{{ p }}</button>
+
+          <button type="button" (click)="goToPage(currentPage() + 1)" [disabled]="currentPage() === totalPages()" aria-label="Next page">&rsaquo;</button>
+          <button type="button" (click)="goToPage(totalPages())" [disabled]="currentPage() === totalPages()" aria-label="Last page">&raquo;</button>
+        </div>
+
+        <div class="select-field size-field">
+          <select [ngModel]="pageSize()" (ngModelChange)="onPageSizeChange($event)">
+            <option *ngFor="let s of pageSizes" [value]="s">{{ s }} / page</option>
+          </select>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

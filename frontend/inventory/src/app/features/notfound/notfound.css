@@ -1,0 +1,170 @@
+/* ===== المتغيرات: نفس ألوان السايدبار والاستوك ===== */
+:host {
+  --nf-bg-top: #04182b;
+  --nf-bg-bottom: #072a45;
+  --nf-teal: #14b8a6;
+  --nf-teal-deep: #0f7c74;
+  --nf-text: #e2e8f0;
+  --nf-muted: #94a3b8;
+
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* ===== الصفحة: طول الشاشة كامل + توسيط ===== */
+.nf-page {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100dvh;
+  padding: 24px 18px;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--nf-bg-top) 0%, var(--nf-bg-bottom) 100%);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: var(--nf-text);
+}
+
+/* ===== الكارت: زجاجي شفاف بحدود ناعمة ===== */
+.nf-card {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+  max-width: 460px;
+  padding: 36px 28px 26px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.045);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 18px 44px rgba(2, 12, 24, 0.45);
+  backdrop-filter: blur(8px);
+}
+
+/* ===== الأيقونة العلوية ===== */
+.nf-icon {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  background: rgba(20, 184, 166, 0.14);
+  border: 1px solid rgba(20, 184, 166, 0.3);
+  color: var(--nf-teal);
+}
+.nf-icon svg { width: 30px; height: 30px; }
+
+/* ===== رقم 404 ===== */
+.nf-code {
+  margin: 18px 0 0;
+  font-size: 64px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -3px;
+  color: #fff;
+  /* تدريج خفيف من الأبيض للتركوازي */
+  background: linear-gradient(180deg, #ffffff 30%, var(--nf-teal) 130%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ===== العنوان والوصف ===== */
+.nf-title {
+  margin: 10px 0 0;
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  color: #fff;
+}
+.nf-text {
+  margin: 10px 0 0;
+  max-width: 350px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--nf-muted);
+  text-wrap: pretty;
+}
+
+/* ===== الأزرار ===== */
+.nf-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 24px;
+}
+.nf-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 18px;
+  border-radius: 11px;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.12s ease;
+}
+.nf-btn svg { width: 17px; height: 17px; }
+.nf-btn:active { transform: scale(0.97); }
+
+/* الزرار الأساسي (تركوازي مليان) */
+.nf-btn.primary {
+  border: 1px solid transparent;
+  background: var(--nf-teal-deep);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(15, 124, 116, 0.34);
+}
+.nf-btn.primary:hover { background: #0d6a63; }
+
+/* ===== سطر التوقيع السفلي ===== */
+.nf-brand {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 26px 0 0;
+  padding-top: 16px;
+  width: 100%;
+  justify-content: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--nf-muted);
+}
+.nf-brand-mark { width: 15px; height: 15px; color: var(--nf-teal); }
+.nf-brand-mark svg { width: 100%; height: 100%; }
+.nf-dot { color: rgba(255, 255, 255, 0.28); }
+
+/* ===== زخرفة المربعات في الخلفية ===== */
+.nf-deco { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.nf-deco .sq {
+  position: absolute;
+  display: block;
+  background: var(--nf-teal);
+  border-radius: 3px;
+}
+.sq.s1 { width: 10px; height: 10px; top: 12%;  left: 9%;  opacity: 0.35; }
+.sq.s2 { width: 16px; height: 16px; top: 24%;  left: 4%;  opacity: 0.2; }
+.sq.s3 { width: 8px;  height: 8px;  top: 74%;  left: 14%; opacity: 0.3; }
+.sq.s4 { width: 14px; height: 14px; top: 18%;  right: 10%; opacity: 0.25; }
+.sq.s5 { width: 9px;  height: 9px;  bottom: 16%; right: 7%; opacity: 0.4; }
+.sq.s6 { width: 18px; height: 18px; bottom: 8%;  right: 20%; opacity: 0.15; }
+
+/* ===== الموبايل ===== */
+@media (max-width: 640px) {
+  .nf-card { padding: 28px 20px 22px; border-radius: 18px; }
+  .nf-code { font-size: 52px; letter-spacing: -2px; }
+  .nf-title { font-size: 18px; }
+  .nf-actions { flex-direction: column; width: 100%; }
+  .nf-btn { justify-content: center; width: 100%; }
+  .nf-deco .sq { opacity: 0.14 !important; }
+}
