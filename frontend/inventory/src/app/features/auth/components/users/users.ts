@@ -5,7 +5,7 @@ import {
 
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-
+import { ChangeDetectorRef } from '@angular/core';
 import { Sidebar } from '../../../../shared/components/sidebar/sidebar';
 
 import { User } from '../../../../models/user';
@@ -38,7 +38,8 @@ export class Users implements OnInit {
   constructor(
     private userService: UserService,
     private userLogService: UserLogService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -54,7 +55,9 @@ export class Users implements OnInit {
       next: (users) => {
         this.users = users;
         this.loadingUsers = false;
+        this.cdr.detectChanges();
       },
+      
 
       error: (error) => {
         console.error(
@@ -68,6 +71,7 @@ export class Users implements OnInit {
 
         this.loadingUsers = false;
       }
+      
     });
   }
 
@@ -96,6 +100,7 @@ export class Users implements OnInit {
           .slice(0, 6);
 
         this.loadingLogs = false;
+        this.cdr.detectChanges();
       },
 
       error: (error) => {

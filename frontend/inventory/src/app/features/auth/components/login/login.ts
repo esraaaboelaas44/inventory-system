@@ -49,13 +49,21 @@ export class LoginComponent {
 
       },
 
-      error: (err) => {
+        error: (err) => {
 
         this.isLoading = false;
 
-        this.errorMessage =
-          err?.error?.message ||
-          'Login failed';
+        if (err.status === 401) {
+          this.errorMessage = 'Invalid email or password.';
+        } else if (err.status === 400) {
+          this.errorMessage = 'Please check your data.';
+        } else if (err.status === 500) {
+          this.errorMessage = 'Server error.';
+        } else {
+          this.errorMessage = 'Login failed.';
+        }
+
+        this.cdr.detectChanges();
 
       }
 

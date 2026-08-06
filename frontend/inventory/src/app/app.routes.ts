@@ -7,7 +7,7 @@ import { Supplier } from './features/supplier/supplier';
 import { Order } from './features/order/order';
 import { authGuard } from './guards/auth.guard';
 import { Users } from './features/auth/components/users/users';
-
+import { UserForm } from './features/auth/components/user-form/user-form';
 
 export const routes: Routes = [
 
@@ -18,15 +18,31 @@ export const routes: Routes = [
   },
 
   {
-  path:'users',
-  component: Users,
-  canActivate:[authGuard]
+  path: 'users',
+  canActivate: [authGuard],
+
+  children: [
+    {
+      path: '',
+      component: Users
+    },
+
+    {
+      path: 'add',
+      component: UserForm
+    },
+
+    {
+      path: 'edit/:id',
+      component: UserForm
+    }
+  ]
   },
 
-  {
-    path: 'login',
-    component: LoginComponent
-  },
+{
+  path: 'login',
+  component: LoginComponent
+},
 
 
   {
