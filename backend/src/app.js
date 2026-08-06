@@ -9,6 +9,7 @@ const productRoutes = require("./routes/product.route.js");
 const categoryRoutes = require('./routes/category.route.js');
 const supplierRoutes = require("./routes/supplier.route");
 const orderRoutes = require("./routes/order.route");
+const authLogRoutes = require("./routes/authLog.route");
 const {stockRouter}  = require("./routes/stock.route.js");
 
 const { notFound, errorHandler } = require("./middleware/errorHandler");
@@ -34,7 +35,7 @@ app.use('/api/categories', categoryRoutes);
 app.use("/api/suppliers", supplierRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/stocks", stockRouter);
-
+app.use("/api/auth-logs", authLogRoutes);
 
 // 404 + centralized error handling (must be last)
 app.use(notFound);

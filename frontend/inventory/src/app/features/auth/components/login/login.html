@@ -18,76 +18,120 @@
         </p>
 
         <form
-          class="login-form"
-          (ngSubmit)="login()"
-        >
+  class="login-form"
+  #loginForm="ngForm"
+  (ngSubmit)="login(loginForm)"
+  novalidate
+>
 
-          <div class="form-group">
+  <!-- Email -->
+  <div class="form-group">
 
-            <label style="font-size: 18px;font-weight: 500; font-family:'Poppins', sans-serif;" for="username">
-              Username
-            </label>
+    <label for="email">Email</label>
 
-            <input
-              id="username"
-              name="username"
-              type="text"
-              placeholder="Enter your username"
-              [(ngModel)]="username"
-            />
+    <input
+      id="email"
+      name="email"
+      type="email"
+      placeholder="Enter your Email"
+      required
+      email
+      maxlength="100"
+      [(ngModel)]="loginData.email"
+      #email="ngModel"
+    />
 
-          </div>
+    <small
+      style="color:red"
+      *ngIf="email.invalid && (email.touched || loginForm.submitted)">
 
-          <div class="form-group">
+      <span *ngIf="email.errors?.['required']">
+        Email is required.
+      </span>
 
-            <label style="font-size: 18px;font-weight: 500; font-family:'Poppins', sans-serif" for="password">
-              Password
-            </label>
+      <span *ngIf="email.errors?.['email']">
+        Please enter a valid email.
+      </span>
 
-            <input
-              id="password"
-              name="password"
-              type="password"
-              placeholder="Enter your password"
-              [(ngModel)]="password"
-            />
+    </small>
 
-          </div>
+  </div>
 
-          <div class="options">
+  <!-- Password -->
+  <div class="form-group">
 
-            <label class="remember">
+    <label for="password">Password</label>
 
-              <input 
-                type="checkbox"
-                name="remember"
-                [(ngModel)]="rememberMe"
-              />
+    <input
+      id="password"
+      name="password"
+      type="password"
+      placeholder="Enter your password"
+      required
+      minlength="3"
+      maxlength="30"
+      [(ngModel)]="loginData.password"
+      #password="ngModel"
+    />
 
-              <span style="font-family:'Poppins', sans-serif">
-                Remember me
-              </span>
+    <small
+      style="color:red"
+      *ngIf="password.invalid && (password.touched || loginForm.submitted)">
 
-            </label>
+      <span *ngIf="password.errors?.['required']">
+        Password is required.
+      </span>
 
-            <a style="font-family:'Poppins', sans-serif"
-              href="#"
-              class="forget"
-              (click)="$event.preventDefault()"
-            >
-              Forget password ?
-            </a>
+      <span *ngIf="password.errors?.['minlength']">
+        Password must be at least 3 characters.
+      </span>
 
-        </div>
+    </small>
 
+  </div>
 
+  <div class="options">
 
-        <button
-        class="w-full bg-[#103645] text-white py-4 rounded-full text-lg font-semibold">
-          Login
-        </button>
+    <label class="remember">
 
-        </form>
+      <input
+        type="checkbox"
+        name="remember"
+        [(ngModel)]="rememberMe"
+      />
+
+      <span>Remember me</span>
+
+    </label>
+
+<a
+  routerLink="/forgot-password"
+  class="forget">
+
+  Forget password?
+
+</a>
+
+  </div>
+
+  <button
+    class="login-button"
+    type="submit"
+    [disabled]="isLoading">
+
+    {{ isLoading ? 'Logging in...' : 'Login' }}
+
+  </button>
+
+  <div
+    *ngIf="errorMessage"
+    style="margin-top:15px;color:#dc3545;font-weight:600;text-align:center">
+
+    {{ errorMessage }}
+
+  </div>
+
+</form>
 
       </div>
 

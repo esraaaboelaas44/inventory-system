@@ -1,0 +1,150 @@
+<div class="page">
+
+  <app-sidebar></app-sidebar>
+
+  <main class="content">
+
+    <div class="header">
+
+      <h1>User Management</h1>
+
+      <button
+        type="button"
+        class="add-btn"
+        (click)="addUser()">
+        Add User
+      </button>
+
+    </div>
+
+    <p
+      class="loading-message"
+      *ngIf="loadingUsers">
+      Loading users...
+    </p>
+
+    <p
+      class="error-message"
+      *ngIf="usersError">
+      {{ usersError }}
+    </p>
+
+    <div
+      class="table-card"
+      *ngIf="!loadingUsers">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Created At</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr
+            *ngFor="let user of users"
+            class="clickable-row"
+            (click)="editUser(user._id)">
+
+            <td>{{ user._id }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.role }}</td>
+            <td>{{ user.createdAt | date:'dd-MM-yyyy' }}</td>
+
+            <td>
+
+              <button
+                type="button"
+                class="edit-btn"
+                (click)="$event.stopPropagation(); editUser(user._id)">
+                Edit
+              </button>
+
+              <button
+                type="button"
+                class="delete-btn"
+                (click)="$event.stopPropagation(); deleteUser(user._id)">
+                Delete
+              </button>
+
+            </td>
+
+          </tr>
+
+          <tr *ngIf="users.length === 0">
+            <td
+              colspan="5"
+              class="empty-message">
+              No users found
+            </td>
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+    <h2 class="logs-title">
+      User Logs
+    </h2>
+
+    <p
+      class="loading-message"
+      *ngIf="loadingLogs">
+      Loading user logs...
+    </p>
+
+    <p
+      class="error-message"
+      *ngIf="logsError">
+      {{ logsError }}
+    </p>
+
+    <div
+      class="table-card"
+      *ngIf="!loadingLogs">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>User Name</th>
+            <th>User ID</th>
+            <th>Action</th>
+            <th>Timestamp</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr *ngFor="let log of logs">
+            <td>{{ getLogUserName(log) }}</td>
+            <td>{{ getLogUserId(log) }}</td>
+            <td>{{ log.action }}</td>
+            <td>{{ getLogTimestamp(log) | date:'dd-MM-yyyy HH:mm' }}</td>
+          </tr>
+
+          <tr *ngIf="logs.length === 0">
+            <td
+              colspan="4"
+              class="empty-message">
+              No user logs found
+            </td>
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </main>
+
+</div>
