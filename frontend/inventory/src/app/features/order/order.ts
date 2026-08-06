@@ -55,8 +55,8 @@ export class Order {
   showModal = false;
 
   viewOrder(order: iOrder): void {
-    // full order kept for the table row actions (e.g. cancelOrder), but the
-    // detail modal only needs the id — it fetches its own data via OrderService
+    console.log('[viewOrder] clicked order:', order);
+    console.log('[viewOrder] _id value:', order._id);
     this.selectedOrder = order;
     this.showModal = true;
   }

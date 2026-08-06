@@ -43,6 +43,8 @@ export class DetailedOrder implements OnInit, OnChanges, AfterViewInit, OnDestro
   ) {}
 
   ngOnInit(): void {
+    console.log('[DetailedOrder] received orderId:', this.orderId);
+    this.fetchOrder();
     this.fetchOrder();
   }
 

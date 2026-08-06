@@ -11,17 +11,17 @@ import { SupplierService } from '../../../../services/supplier.service';
 })
 export class EditSupplier {
   id!: any;
+
   constructor(private SupplierService: SupplierService) {}
   // localStorage.getItem('id');
   editSupplier() {
-    this.id = localStorage.getItem('id');
-    console.log('New id from edit', this.id);
-    //get data
-
-    this.SupplierService.editSupplier(this.id).subscirbe({
-      next: () => {},
-      error: () => {},
-      complete: () => {},
-    });
+    // this.id = localStorage.getItem('id');
+    // console.log('New id from edit', this.id);
+    // //get data
+    // this.SupplierService.editSupplier(this.id, data).subscirbe({
+    //   next: () => {},
+    //   error: () => {},
+    //   complete: () => {},
+    // });
   }
 }
