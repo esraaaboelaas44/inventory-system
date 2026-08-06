@@ -17,8 +17,7 @@ const getStock = (req, res) => {
       oldquantity: stock.quantity,
       newquantity: stock.newquantity, 
       performedBy: stock.performedBy,
-      date:new Date(stock.createdAt).toLocaleString("en-US", {year: "numeric",month: "2-digit",day: "2-digit",hour: "2-digit",minute: "2-digit",second: "2-digit",hour12: true})
-    }));
+      date:date:stock.createdAt
 
     res.status(200).json({count: stocks.length,data: result});
   })
@@ -67,8 +66,7 @@ const getLowStockProducts = (req, res) => {
       sku:stock.sku,
       category: stock.category?.name,
       quantity: stock.quantity,
-      date:new Date(stock.createdAt).toLocaleString("en-US", {year: "numeric",month: "2-digit",day: "2-digit",hour: "2-digit",minute: "2-digit",second: "2-digit",hour12: true})
-    }));
+      date:date:stock.createdAt
     res.status(200).json({count: stocks.length,data: result});
   })
   .catch((err) => 
